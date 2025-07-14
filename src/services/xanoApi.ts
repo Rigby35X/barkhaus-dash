@@ -229,3 +229,6 @@ class XanoAPI {
 
 export const xanoAPI = new XanoAPI();
 export type { Dog, AuthResponse, Page };
+export const getPages = xanoAPI.getPages.bind(xanoAPI);
+export const getPageBySlug = xanoAPI.getPageBySlug.bind(xanoAPI);
+export const savePage     = xanoAPI.savePage.bind(xanoAPI);

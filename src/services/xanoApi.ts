@@ -1,8 +1,9 @@
 // src/services/xanoApi.ts
 
-const XANO_BASE_URL  = import.meta.env.VITE_XANO_BASE_URL  || 'https://x8ki-letl-twmt.n7.xano.io/api:wPrzs4Mr';
+const XANO_BASE_URL  = import.meta.env.VITE_XANO_BASE_URL  || 'https://x8ki-letl-twmt.n7.xano.io/api:mlssTgVM';
 const XANO_AUTH_URL  = import.meta.env.VITE_XANO_AUTH_URL  || 'https://x8ki-letl-twmt.n7.xano.io/api:XqEb_TVK';
 const XANO_DOGS_URL  = import.meta.env.VITE_XANO_DOGS_URL  || 'https://x8ki-letl-twmt.n7.xano.io/api:Od874PbA';
+const XANO_PAGES_URL = import.meta.env.VITE_XANO_PAGES_URL || 'https://x8ki-letl-twmt.n7.xano.io/api:mlssTgVM';
 
 interface AuthResponse {
   authToken: string;

@@ -17,7 +17,7 @@ interface TenantContextType {
   updateOrganization: (org: Partial<Organization>) => void;
 }
 
-const TenantContext = createContext<TenantContextType | undefined>(undefined);
+export const TenantContext = createContext<TenantContextType | undefined>(undefined);
 
 export const useTenant = () => {
   const context = useContext(TenantContext);

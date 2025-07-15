@@ -3,29 +3,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import grapesjs from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
 
-// Plugins
 import presetWebpage from 'grapesjs-preset-webpage';
-import pluginExport from 'grapesjs-plugin-export';
+import pluginExport  from 'grapesjs-plugin-export';
 
 import { useTenant } from '../contexts/TenantContext';
 import { getPages, getPageBySlug, savePage } from '../services/xanoApi';
 import type { Page } from '../services/xanoApi';
 
 const SiteEditor: React.FC = () => {
-  // 1) Hooks (in stable order)
   const { organization } = useTenant();
   const [slug, setSlug] = useState('home');
   const [pages, setPages] = useState<Page[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<any>(null);
 
-  // 2) Sync slug from URL
+  // Pull slug from URL
   useEffect(() => {
     const urlSlug = new URLSearchParams(window.location.search).get('slug');
     setSlug(urlSlug || 'home');
   }, []);
 
-  // 3) Load pages list
+  // Load page list
   const tenantId = organization ? Number(organization.id) : null;
   useEffect(() => {
     if (tenantId !== null) {
@@ -33,14 +31,17 @@ const SiteEditor: React.FC = () => {
     }
   }, [tenantId]);
 
-  // 4) (Re)initialize GrapesJS when slug or tenant changes
+  // Init GrapesJS when tenantId, slug *and* organization are set
   useEffect(() => {
-    if (tenantId === null) return;
+    // TS guard: this makes `organization` non-null below
+    if (!organization || tenantId === null) return;
+
+    // clean up previous editor
     editorRef.current?.destroy();
 
     getPageBySlug(tenantId, slug)
       .then(page => {
-        // parse JSON or fallback
+        // parse or fallback
         let comps: any[] = [];
         if (page?.content_json) {
           try {
@@ -51,13 +52,14 @@ const SiteEditor: React.FC = () => {
         }
         if (!comps.length) {
           comps = [
-            { type: 'text', content: `<h1>${organization!.name}</h1>` },
+            { type: 'text', content: `<h1>${organization.name}</h1>` },
             { type: 'text', content: '<p>Edit this default page</p>' }
           ];
         }
 
-        // Cast to any so TS ignores component‐type mismatch
-        editorRef.current = (grapesjs.init as any)({
+        // Bypass the strict init signature by calling through an any-typed alias
+        const initEditor: any = grapesjs.init;
+        editorRef.current = initEditor({
           container: containerRef.current!,
           fromElement: false,
           components: comps,
@@ -67,7 +69,7 @@ const SiteEditor: React.FC = () => {
           }
         });
 
-        // Auto-save debounce
+        // auto-save on changes
         let timer: any;
         editorRef.current.on('update', () => {
           clearTimeout(timer);
@@ -89,11 +91,11 @@ const SiteEditor: React.FC = () => {
     };
   }, [tenantId, slug, organization]);
 
-  // 5) Loading guards
-  if (!organization) return <div>Loading tenant…</div>;
+  // Loading states
+  if (!organization)     return <div>Loading tenant…</div>;
   if (tenantId === null) return <div>Invalid tenant</div>;
 
-  // 6) Render selector + canvas
+  // Render
   return (
     <div className="flex h-screen">
       <div className="p-4 border-r">

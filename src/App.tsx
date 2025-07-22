@@ -16,6 +16,7 @@ import SiteEditor from './pages/SiteEditor';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import TemplatesPage from './pages/templates'; // 👈 import the new page
 
 function App() {
   return (
@@ -24,9 +25,12 @@ function App() {
         <TenantProvider>
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+               <Route path="/templates" element={<TemplatesPage />} />
             <Route path="/app" element={
+              
               <ProtectedRoute>
                 <Layout />
               </ProtectedRoute>
@@ -41,6 +45,9 @@ function App() {
               <Route path="live-site" element={<LiveSite />} />
               <Route path="site-editor" element={<SiteEditor />} />
               <Route path="settings" element={<Settings />} />
+            
+  
+     
             </Route>
           </Routes>
         </TenantProvider>

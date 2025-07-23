@@ -35,7 +35,8 @@ const Layout: React.FC = () => {
     { name: 'Communications', href: '/app/communications', icon: MessageSquare },
     { name: 'Social Media', href: '/app/social-media', icon: Share2 },
     { name: 'Live Site', href: '/app/live-site', icon: Globe },
-    { name: 'Site Editor', href: '/app/site-editor', icon: Palette },
+    { name: 'Templates', href: '/templates', icon: Palette }, // or another icon you prefer
+    { name: 'Advanced Editor', href: '/app/advanced-editor', icon: Palette },
     { name: 'Settings', href: '/app/settings', icon: Settings },
   ];
 

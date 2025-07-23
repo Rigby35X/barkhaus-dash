@@ -1,7 +1,26 @@
 barkhaus-replit/barkhaus-boilerplate/SaaS-Boilerplate/
 .vercel
 # dependencies
-/node_modules/
+node_modules
+*/test
+
+bin/
+build/
+develop-eggs/
+dist/
+coverage/
+egg/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+.DS_STore
+.env
 
 # Vite build cache and local build output
 /.vite/

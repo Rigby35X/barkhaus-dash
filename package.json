@@ -13,7 +13,6 @@
     "@grapesjs/studio-sdk": "^1.0.52",
     "@supabase/supabase-js": "^2.39.0",
     "@types/uuid": "^9.0.7",
-    "@vitejs/plugin-react": "^4.2.1",
     "grapesjs-plugin-export": "^1.0.12",
     "grapesjs-preset-webpage": "^1.0.3",
     "lucide-react": "^0.263.1",
@@ -27,6 +26,7 @@
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -35,5 +35,8 @@
     "tailwindcss": "^3.3.6",
     "typescript": "^5.2.2",
     "vite": "^7.0.5"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }

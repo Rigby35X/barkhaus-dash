@@ -47,6 +47,10 @@ interface Page {
   updated_at?: string;
 }
 
+interface ContentJSON {
+  [key: string]: unknown;
+}
+
 class XanoAPI {
   private authToken: string | null = null;
 
@@ -64,14 +68,13 @@ class XanoAPI {
     return headers;
   }
 
-  // Authentication methods
   async signup(
     email: string,
     password: string,
     firstName: string,
     lastName: string,
     organizationName: string
-  ) {
+  ): Promise<AuthResponse> {
     const res = await fetch(`${XANO_AUTH_URL}/auth/signup`, {
       method: 'POST',
       headers: this.getHeaders(),
@@ -90,7 +93,7 @@ class XanoAPI {
     return data;
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<AuthResponse> {
     const res = await fetch(`${XANO_AUTH_URL}/auth/login`, {
       method: 'POST',
       headers: this.getHeaders(),
@@ -103,7 +106,7 @@ class XanoAPI {
     return data;
   }
 
-  async getMe() {
+  async getMe(): Promise<AuthResponse['user']> {
     if (!this.authToken) throw new Error('No auth token');
     const res = await fetch(`${XANO_AUTH_URL}/auth/me`, {
       method: 'GET',
@@ -113,12 +116,11 @@ class XanoAPI {
     return res.json();
   }
 
-  logout() {
+  logout(): void {
     this.authToken = null;
     localStorage.removeItem('xano_auth_token');
   }
 
-  // Dogs/Pets methods
   async getDogs(): Promise<Dog[]> {
     const res = await fetch(`${XANO_DOGS_URL}/dogs`, {
       method: 'GET',
@@ -165,7 +167,6 @@ class XanoAPI {
     if (!res.ok) throw new Error('Failed to delete dog');
   }
 
-  // Image upload method
   async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('image', file);
@@ -173,7 +174,7 @@ class XanoAPI {
     const res = await fetch(`${XANO_DOGS_URL}/upload`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.authToken}`,
+        Authorization: `Bearer ${this.authToken}`,
       },
       body: formData,
     });
@@ -182,7 +183,6 @@ class XanoAPI {
     return data.url;
   }
 
-  // Pages methods
   async getPages(tenantId: number, slug?: string): Promise<Page[]> {
     const url = new URL(`${XANO_BASE_URL}/pages`);
     url.searchParams.append('tenant_id', tenantId.toString());
@@ -205,7 +205,7 @@ class XanoAPI {
     tenantId: number,
     slug: string,
     title: string,
-    contentJson: any
+    contentJson: ContentJSON
   ): Promise<Page> {
     const method = pageId ? 'PATCH' : 'POST';
     const url = pageId
@@ -228,7 +228,9 @@ class XanoAPI {
 }
 
 export const xanoAPI = new XanoAPI();
+
+// Export types only
 export type { Dog, AuthResponse, Page };
-export const getPages = xanoAPI.getPages.bind(xanoAPI);
-export const getPageBySlug = xanoAPI.getPageBySlug.bind(xanoAPI);
-export const savePage     = xanoAPI.savePage.bind(xanoAPI);
+
+// ❌ Removed conflicting function re-exports
+// If you need helpers like `getPages`, use them like: `xanoAPI.getPages(...)`

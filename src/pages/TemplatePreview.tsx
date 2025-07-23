@@ -8,6 +8,11 @@ const TemplatesDashboard = () => {
   return (
     <PublicLayout>
       {/* ... existing template grid ... */}
+      {/* Add your template grid or content here */}
+      <div>
+        {/* Example content */}
+        <h2>Templates Dashboard</h2>
+      </div>
     </PublicLayout>
   );
 };

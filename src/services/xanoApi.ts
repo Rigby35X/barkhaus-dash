@@ -243,10 +243,8 @@ export const savePage = (page: Page): Promise<Page> => {
     page.tenant_id,
     page.slug,
     page.title,
-    page.content_json // should be a stringified JSON
+    page.content_json
   );
 };
-
-export type { Dog, AuthResponse, Page };
 
 

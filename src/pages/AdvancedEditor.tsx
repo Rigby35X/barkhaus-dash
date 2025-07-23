@@ -10,7 +10,7 @@ import { useTenant } from '../contexts/TenantContext';
 import { getPages, getPageBySlug, savePage } from '../services/xanoApi';
 import type { Page } from '../services/xanoApi';
 
-const SiteEditor: React.FC = () => {
+const AdvancedEditor: React.FC = () => {
   const { organization } = useTenant();
   const [slug, setSlug] = useState('home');
   const [pages, setPages] = useState<Page[]>([]);
@@ -33,15 +33,13 @@ const SiteEditor: React.FC = () => {
 
   // Init GrapesJS when tenantId, slug *and* organization are set
   useEffect(() => {
-    // TS guard: this makes `organization` non-null below
     if (!organization || tenantId === null) return;
 
-    // clean up previous editor
     editorRef.current?.destroy();
 
-    getPageBySlug(tenantId, slug)
-      .then(page => {
-        // parse or fallback
+    const run = async () => {
+      try {
+        const page = await getPageBySlug(tenantId, slug);
         let comps: any[] = [];
         if (page?.content_json) {
           try {
@@ -57,7 +55,6 @@ const SiteEditor: React.FC = () => {
           ];
         }
 
-        // Bypass the strict init signature by calling through an any-typed alias
         const initEditor: any = grapesjs.init;
         editorRef.current = initEditor({
           container: containerRef.current!,
@@ -74,28 +71,30 @@ const SiteEditor: React.FC = () => {
         editorRef.current.on('update', () => {
           clearTimeout(timer);
           timer = setTimeout(() => {
-            savePage(
-              page?.id || null,
-              tenantId,
+            savePage({
+              id: page?.id || null,
+              tenant_id: tenantId,
               slug,
-              page?.title || slug,
-              editorRef.current.getComponents()
-            ).catch(console.error);
+              title: page?.title || slug,
+              content_json: JSON.stringify(editorRef.current.getComponents())
+            }).catch(console.error);
           }, 2000);
         });
-      })
-      .catch(console.error);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    run();
 
     return () => {
       editorRef.current?.destroy();
     };
   }, [tenantId, slug, organization]);
 
-  // Loading states
   if (!organization)     return <div>Loading tenant…</div>;
   if (tenantId === null) return <div>Invalid tenant</div>;
 
-  // Render
   return (
     <div className="flex h-screen">
       <div className="p-4 border-r">
@@ -126,4 +125,4 @@ const SiteEditor: React.FC = () => {
   );
 };
 
-export default SiteEditor;
+export default AdvancedEditor;

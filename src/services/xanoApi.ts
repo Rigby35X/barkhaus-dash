@@ -37,8 +37,8 @@ interface Dog {
   updated_at: string;
 }
 
-interface Page {
-  id: number;
+export interface Page {
+  id: number | null;
   tenant_id: number;
   slug: string;
   title: string;
@@ -202,17 +202,17 @@ class XanoAPI {
 
   async savePage(
     pageId: number | null,
-    tenantId: number,
+    tenant_id: number,
     slug: string,
     title: string,
-    contentJson: ContentJSON
+    contentJson: any
   ): Promise<Page> {
     const method = pageId ? 'PATCH' : 'POST';
     const url = pageId
       ? `${XANO_BASE_URL}/pages/${pageId}`
       : `${XANO_BASE_URL}/pages`;
     const body = {
-      tenant_id: tenantId,
+      tenant_id,
       slug,
       title,
       content_json: JSON.stringify(contentJson),
@@ -229,8 +229,24 @@ class XanoAPI {
 
 export const xanoAPI = new XanoAPI();
 
-// Export types only
+export const getPages = (tenantId: number): Promise<Page[]> => {
+  return xanoAPI.getPages(tenantId);
+};
+
+export const getPageBySlug = (tenantId: number, slug: string): Promise<Page | null> => {
+  return xanoAPI.getPageBySlug(tenantId, slug);
+};
+
+export const savePage = (page: Page): Promise<Page> => {
+  return xanoAPI.savePage(
+    page.id ?? null,
+    page.tenant_id,
+    page.slug,
+    page.title,
+    page.content_json // should be a stringified JSON
+  );
+};
+
 export type { Dog, AuthResponse, Page };
 
-// ❌ Removed conflicting function re-exports
-// If you need helpers like `getPages`, use them like: `xanoAPI.getPages(...)`
+

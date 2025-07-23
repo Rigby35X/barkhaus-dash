@@ -1,25 +1,12 @@
-// src/pages/templates/classic/sections/Hero.tsx
-import React from 'react';
-import { useLiveSite } from '@/pages/LiveSiteContext';
-
 const Hero = () => {
-  const { design, organization } = useLiveSite();
-
   return (
-    <section className="bg-primary-600 text-white py-16">
-      <div className="max-w-6xl mx-auto px-4 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          {organization?.name || 'Welcome to BarkHaus Rescue'}
-        </h1>
-        <p className="text-lg md:text-xl mb-6">
-          {organization?.tagline || 'Giving every dog a second chance at a loving home.'}
+    <section className="bg-white py-16">
+      <div className="max-w-4xl mx-auto px-4 text-center">
+        <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
+        <p className="text-gray-700 text-lg">
+          BarkHaus Rescue is dedicated to saving and rehoming dogs in need. Our mission is to provide shelter, care,
+          and love until each dog finds their forever home.
         </p>
-        <a
-          href="#available-pets"
-          className="inline-block bg-white text-primary-600 font-semibold px-6 py-3 rounded hover:bg-gray-100"
-        >
-          {organization?.cta_label || 'Meet Our Dogs'}
-        </a>
       </div>
     </section>
   );

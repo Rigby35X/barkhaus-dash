@@ -1,5 +1,5 @@
-// src/pages/templates/classic/ClassicHomepage.tsx
-
+import React from 'react';
+import { LiveSiteProvider } from '../../../contexts/LiveSiteContext';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import AvailablePets from './sections/AvailablePets';
@@ -7,12 +7,14 @@ import Footer from './sections/Footer';
 
 const ClassicHomepage = () => {
   return (
-    <>
-      <Hero />
-      <About />
-      <AvailablePets />
-      <Footer />
-    </>
+    <LiveSiteProvider>
+      <div className="min-h-screen">
+        <Hero />
+        <About />
+        <AvailablePets />
+        <Footer />
+      </div>
+    </LiveSiteProvider>
   );
 };
 

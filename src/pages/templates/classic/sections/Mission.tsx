@@ -1,15 +1,23 @@
-const Mission = () => {
+import React from 'react';
+import { useLiveSite } from '../../../../contexts/LiveSiteContext';
+import SectionWrapper from '../../../../components/sections/SectionWrapper';
+import SectionTitle from '../../../../components/sections/SectionTitle';
 
+const Mission = () => {
+  const { siteContent } = useLiveSite();
+  const aboutData = siteContent.pages.about.aboutSection;
 
   return (
-    <section className="py-12 bg-white text-center">
-      <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-4">Our Mission</h2>
-        <p className="text-lg text-gray-700">
-          {'We’re here to rescue dogs and find them homes.'}
-        </p>
+    <SectionWrapper backgroundColor="white" padding="md">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <SectionTitle
+          title={aboutData.title}
+          subtitle={aboutData.content}
+          alignment="center"
+          size="lg"
+        />
       </div>
-    </section>
+    </SectionWrapper>
   );
 };
 

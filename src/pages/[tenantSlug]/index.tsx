@@ -3,8 +3,10 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+// Fix this import path:
 import { LiveSiteProvider } from "../../contexts/LiveSiteContext"
 import ClassicHomepage from "../templates/classic/ClassicHomepage"
+import type { DesignSettings, LiveSiteConfig } from "../../services/xanoApi"
 
 interface LiveSiteData {
   id: number
@@ -33,21 +35,6 @@ interface LiveSiteData {
   is_published: boolean
 }
 
-interface DesignSettings {
-  id: number
-  tenant_slug: number
-  live_site: number
-  template_name: string
-  headingFont: string
-  fontFamily: string
-  google_heading_font_link: string
-  googleBodyFontLink: string
-  primaryColor: string
-  secondaryColor: string
-  backgroundColor: string
-  fontColor: string
-}
-
 const PublicHomepage: React.FC = () => {
   const { tenantSlug } = useParams<{ tenantSlug: string }>()
   const [liveSiteData, setLiveSiteData] = useState<LiveSiteData | null>(null)
@@ -59,18 +46,18 @@ const PublicHomepage: React.FC = () => {
   useEffect(() => {
     if (designSettings) {
       const headingLink = document.createElement("link")
-      headingLink.href = designSettings.google_heading_font_link
+      headingLink.href = designSettings.googleHeadingFontLink // ✅ Correct - camelCase
       headingLink.rel = "stylesheet"
       document.head.appendChild(headingLink)
 
       const bodyLink = document.createElement("link")
-      bodyLink.href = designSettings.googleBodyFontLink
+      bodyLink.href = designSettings.googleBodyFontLink // ✅ Correct - camelCase
       bodyLink.rel = "stylesheet"
       document.head.appendChild(bodyLink)
 
       return () => {
-        document.head.removeChild(headingLink)
-        document.head.removeChild(bodyLink)
+        if (document.head.contains(headingLink)) document.head.removeChild(headingLink)
+        if (document.head.contains(bodyLink)) document.head.removeChild(bodyLink)
       }
     }
   }, [designSettings])
@@ -183,22 +170,34 @@ const PublicHomepage: React.FC = () => {
     },
   }
 
-  const contextDesign = designSettings
-    ? {
-        primaryColor: designSettings.primaryColor,
-        secondaryColor: designSettings.secondaryColor,
-        accentColor: designSettings.primaryColor,
-        fontFamily: designSettings.fontFamily,
-        headingFont: designSettings.headingFont,
-        backgroundColor: designSettings.backgroundColor,
-        textColor: designSettings.fontColor,
-        borderRadius: "0.75rem",
-        shadowStyle: "shadow-lg",
-      }
-    : undefined
+  const contextDesign = designSettings || undefined
+
+  // Transform your data to match LiveSiteConfig interface
+  const transformedLiveSiteConfig: LiveSiteConfig = {
+    id: liveSiteData.id || 1,
+    tenant_id: liveSiteData.tenant_id || 1,
+    site_name: contextData.organization.siteName,
+    site_url: contextData.organization.contactInfo.website,
+    logo_url: contextData.organization.logo,
+    about_us: contextData.organization.aboutUs,
+    mission_statement: contextData.organization.mission,
+    contact_info: {
+      address: contextData.organization.contactInfo.address,
+      phone: contextData.organization.contactInfo.phone,
+      email: contextData.organization.contactInfo.email,
+      hours: liveSiteData.contact_info?.hours || "9 AM - 5 PM",
+    },
+    ein_number: contextData.organization.registrationNumber,
+    social_media: {
+      facebook: contextData.organization.contactInfo.socialMedia?.facebook || "",
+      instagram: contextData.organization.contactInfo.socialMedia?.instagram || "",
+      twitter: contextData.organization.contactInfo.socialMedia?.twitter || "",
+      linkedin: contextData.organization.contactInfo.socialMedia?.linkedin || "",
+    },
+  }
 
   const renderTemplate = () => {
-    const templateName = designSettings?.template_name || "classic"
+    const templateName = designSettings?.templateName || "classic"
 
     switch (templateName) {
       case "classic":
@@ -208,7 +207,7 @@ const PublicHomepage: React.FC = () => {
   }
 
   return (
-    <LiveSiteProvider initialData={contextData} initialDesign={contextDesign}>
+    <LiveSiteProvider initialData={transformedLiveSiteConfig} initialDesign={contextDesign}>
       {renderTemplate()}
     </LiveSiteProvider>
   )

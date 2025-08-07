@@ -65,7 +65,7 @@ export interface LiveSiteConfig {
 
 export interface DesignSettings {
   id?: number;
-  tenantSlug: number;
+  tenantSlug: string;
   liveSite: number;
   templateName: string;
   headingFont: string;

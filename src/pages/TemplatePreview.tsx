@@ -1,6 +1,7 @@
 import ClassicHomepage from "./templates/classic/ClassicHomepage"
 import PublicLayout from "../components/PublicLayout"
 import { LiveSiteProvider } from "../contexts/LiveSiteContext"
+import type { DesignSettings, LiveSiteConfig } from "../services/xanoApi"
 
 // Mock organization data - in a real app, this would come from API/database
 const getOrganizationData = (orgId?: string) => {
@@ -15,6 +16,7 @@ const getOrganizationData = (orgId?: string) => {
         "To provide shelter, medical care, and love to abandoned animals while finding them perfect forever homes.",
       vision: "A community where no animal is left behind.",
       foundedYear: 2015,
+      registrationNumber: "12-3456789", // Added EIN/registration number
       contactInfo: {
         address: "456 Rescue Lane, Pet City, PC 67890",
         phone: "(555) 987-6543",
@@ -24,6 +26,7 @@ const getOrganizationData = (orgId?: string) => {
           facebook: "https://facebook.com/pawsandhearts",
           instagram: "https://instagram.com/pawsandhearts",
           twitter: "https://twitter.com/pawsandhearts",
+          linkedin: "https://linkedin.com/company/pawsandhearts",
         },
       },
     },
@@ -98,11 +101,54 @@ const TemplatePreview = () => {
   const organizationData = getOrganizationData(orgId || undefined)
   const designSettings = getDesignSettings(template || undefined)
 
+  // Transform organizationData to match LiveSiteConfig interface
+  const transformedLiveSiteConfig: LiveSiteConfig = {
+    id: 1, // default or get from your data
+    tenant_id: 1, // default or get from your data
+    site_name: organizationData.organization.siteName,
+    site_url: organizationData.organization.contactInfo.website,
+    logo_url: organizationData.organization.logo,
+    about_us: organizationData.organization.aboutUs,
+    mission_statement: organizationData.organization.mission,
+    contact_info: {
+      address: organizationData.organization.contactInfo.address,
+      phone: organizationData.organization.contactInfo.phone,
+      email: organizationData.organization.contactInfo.email,
+      hours: "9 AM - 5 PM", // add default
+    },
+    ein_number: organizationData.organization.registrationNumber,
+    social_media: {
+      facebook: organizationData.organization.contactInfo.socialMedia?.facebook || "",
+      instagram: organizationData.organization.contactInfo.socialMedia?.instagram || "",
+      twitter: organizationData.organization.contactInfo.socialMedia?.twitter || "",
+      linkedin: organizationData.organization.contactInfo.socialMedia?.linkedin || "",
+    },
+  }
+
+  // Transform designSettings to match DesignSettings interface
+  const transformedDesignSettings: DesignSettings = {
+    id: 1,
+    tenantSlug: "preview",
+    liveSite: 1,
+    templateName: "classic",
+    headingFont: designSettings?.headingFont || "Inter",
+    fontFamily: designSettings?.fontFamily || "Inter",
+    googleHeadingFontLink: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
+    googleBodyFontLink: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap",
+    primaryColor: designSettings?.primaryColor || "#3B82F6",
+    secondaryColor: designSettings?.secondaryColor || "#8B5CF6",
+    accentColor: designSettings?.accentColor || "#10B981",
+    backgroundColor: "#FFFFFF",
+    textColor: "#1F2937",
+    borderRadius: "0.75rem",
+    shadowStyle: "shadow-lg",
+  }
+
   const renderTemplate = () => {
     switch (template) {
       case "classic":
         return (
-          <LiveSiteProvider initialData={organizationData} initialDesign={designSettings}>
+          <LiveSiteProvider initialData={transformedLiveSiteConfig} initialDesign={transformedDesignSettings}>
             <ClassicHomepage />
           </LiveSiteProvider>
         )

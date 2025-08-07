@@ -1,91 +1,139 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { createContext, useContext, ReactNode } from 'react';
 
-interface HeroSection {
-  title: string;
-  subtitle: string;
-  backgroundImage?: string;
-  ctaText: string;
-  ctaLink: string;
+interface DesignSettings {
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  fontFamily: string;
+  headingFont: string;
+  backgroundColor: string;
+  textColor: string;
 }
 
-interface AboutSection {
-  title: string;
-  content: string;
-  image?: string;
-}
-
-interface SuccessStory {
-  title: string;
-  description: string;
-  image: string;
-}
-
-interface LiveSiteData {
-  site_name: string;
-  tagline?: string;
-  mission?: string;
-  logo_url?: string;
-  primary_color?: string;
-  secondary_color?: string;
-  background_color?: string;
-  heading_font_family?: string;
-  body_font_family?: string;
-  pages?: {
-    home?: {
-      heroSection?: HeroSection;
-      featuredPets?: any[];
+interface SiteContent {
+  siteName: string;
+  logo: string;
+  tagline: string;
+  aboutUs: string;
+  contactInfo: {
+    address: string;
+    phone: string;
+    email: string;
+    website?: string;
+  };
+  pages: {
+    home: {
+      heroSection: {
+        title: string;
+        subtitle: string;
+        backgroundImage?: string;
+        ctaText: string;
+        ctaLink: string;
+      };
     };
-    about?: AboutSection;
-    successStories?: SuccessStory[];
+    about: {
+      aboutSection: {
+        title: string;
+        content: string;
+        image?: string;
+      };
+    };
+    successStories: {
+      headerSection: {
+        title: string;
+        content: string;
+      };
+    };
   };
 }
 
 interface LiveSiteContextType {
-  liveSiteData: LiveSiteData | null;
-  loading: boolean;
-  error: string | null;
+  designSettings: DesignSettings;
+  siteContent: SiteContent;
+  updateDesignSettings: (settings: Partial<DesignSettings>) => void;
+  updateSiteContent: (content: Partial<SiteContent>) => void;
 }
 
-const LiveSiteContext = createContext<LiveSiteContextType>({
-  liveSiteData: null,
-  loading: true,
-  error: null,
-});
+const defaultDesignSettings: DesignSettings = {
+  primaryColor: '#009688',
+  secondaryColor: '#4db6ac',
+  accentColor: '#ff5722',
+  fontFamily: 'Inter, system-ui, sans-serif',
+  headingFont: 'Bebas Neue, cursive',
+  backgroundColor: '#ffffff',
+  textColor: '#111827',
+};
 
-export const useLiveSite = () => useContext(LiveSiteContext);
+const defaultSiteContent: SiteContent = {
+  siteName: 'Happy Paws Rescue',
+  logo: '/Duggy.png',
+  tagline: 'Saving lives, one paw at a time',
+  aboutUs: 'We are dedicated to rescuing and rehoming animals in need, providing them with love, care, and a second chance at happiness.',
+  contactInfo: {
+    address: '123 Main St, Anytown, ST 12345',
+    phone: '(555) 123-4567',
+    email: 'info@happypawsrescue.org',
+    website: 'https://happypawsrescue.org',
+  },
+  pages: {
+    home: {
+      heroSection: {
+        title: 'Find Your Perfect Companion',
+        subtitle: 'Every animal deserves a loving home. Help us make that happen.',
+        ctaText: 'View Available Pets',
+        ctaLink: '#pets',
+      },
+    },
+    about: {
+      aboutSection: {
+        title: 'Our Mission',
+        content: 'We believe every animal deserves love, care, and a forever home. Our dedicated team works tirelessly to rescue, rehabilitate, and rehome animals in need.',
+      },
+    },
+    successStories: {
+      headerSection: {
+        title: 'Success Stories',
+        content: 'See the amazing transformations and happy endings made possible by our community.',
+      },
+    },
+  },
+};
 
-export const LiveSiteProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { tenantSlug } = useParams();
-  const [liveSiteData, setLiveSiteData] = useState<LiveSiteData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const LiveSiteContext = createContext<LiveSiteContextType | undefined>(undefined);
 
-  const resolvedSlug = tenantSlug ?? import.meta.env.VITE_DEFAULT_TENANT_SLUG ?? "demo-org";
+export const useLiveSite = () => {
+  const context = useContext(LiveSiteContext);
+  if (context === undefined) {
+    throw new Error('useLiveSite must be used within a LiveSiteProvider');
+  }
+  return context;
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `https://x8ki-letl-twmt.n7.xano.io/api:nS8IsiFR/get-live-site-config?tenant_slug=${resolvedSlug}`
-        );
-        setLiveSiteData(res.data);
-      } catch (err: any) {
-        console.error("Failed to fetch live site config", err);
-        setError("Unable to load site config.");
-      } finally {
-        setLoading(false);
-      }
-    };
+interface LiveSiteProviderProps {
+  children: ReactNode;
+}
 
-    fetchData();
-  }, [resolvedSlug]);
+export const LiveSiteProvider: React.FC<LiveSiteProviderProps> = ({ children }) => {
+  const [designSettings, setDesignSettings] = React.useState<DesignSettings>(defaultDesignSettings);
+  const [siteContent, setSiteContent] = React.useState<SiteContent>(defaultSiteContent);
+
+  const updateDesignSettings = (settings: Partial<DesignSettings>) => {
+    setDesignSettings(prev => ({ ...prev, ...settings }));
+  };
+
+  const updateSiteContent = (content: Partial<SiteContent>) => {
+    setSiteContent(prev => ({ ...prev, ...content }));
+  };
+
+  const value = {
+    designSettings,
+    siteContent,
+    updateDesignSettings,
+    updateSiteContent,
+  };
 
   return (
-    <LiveSiteContext.Provider value={{ liveSiteData, loading, error }}>
+    <LiveSiteContext.Provider value={value}>
       {children}
     </LiveSiteContext.Provider>
   );

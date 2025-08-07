@@ -1,16 +1,23 @@
+import React from 'react';
 import { useLiveSite } from '../../../../contexts/LiveSiteContext';
+import SectionWrapper from '../../../../components/sections/SectionWrapper';
+import SectionTitle from '../../../../components/sections/SectionTitle';
 
 const Mission = () => {
-  const config = useLiveSite();
-  if (!config) return null;
+  const { siteContent } = useLiveSite();
+  const aboutData = siteContent.pages.about.aboutSection;
 
   return (
-    <section className="bg-white py-16">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
-        <p className="text-gray-700 text-lg">{config.mission}</p>
+    <SectionWrapper backgroundColor="white" padding="md">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <SectionTitle
+          title={aboutData.title}
+          subtitle={aboutData.content}
+          alignment="center"
+          size="lg"
+        />
       </div>
-    </section>
+    </SectionWrapper>
   );
 };
 

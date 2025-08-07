@@ -34,6 +34,7 @@ const AdvancedEditor: React.FC = () => {
   // Init GrapesJS when tenantId, slug *and* organization are set
   useEffect(() => {
     if (!organization || tenantId === null) return;
+    if (!containerRef.current) return;
 
     editorRef.current?.destroy();
 

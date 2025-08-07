@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { TenantProvider } from './contexts/TenantContext';
-import { LiveSiteProvider } from './contexts/LiveSiteContext';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -31,42 +30,40 @@ function App() {
     <Router>
       <AuthProvider>
         <TenantProvider>
-          <LiveSiteProvider>
-            <Routes>
-              {/* 👇 Home */}
-              <Route path="/" element={<LandingPage />} />
+          <Routes>
+            {/* 👇 Home */}
+            <Route path="/" element={<LandingPage />} />
 
-              {/* 👇 Template Library + Preview */}
-              <Route path="/templates" element={<TemplatesDashboard />} />
-              <Route path="/preview" element={<TemplatePreview />} />
+            {/* 👇 Template Library + Preview */}
+            <Route path="/templates" element={<TemplatesDashboard />} />
+            <Route path="/preview" element={<TemplatePreview />} />
 
-              {/* 👇 Auth Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+            {/* 👇 Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-              {/* 👇 Protected App Dashboard */}
-              <Route
-                path="/app"
-                element={
-                  <ProtectedRoute>
-                    <Layout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Dashboard />} />
-                <Route path="pets" element={<Pets />} />
-                <Route path="applications" element={<Applications />} />
-                <Route path="campaigns" element={<Campaigns />} />
-                <Route path="inbox" element={<Inbox />} />
-                <Route path="communications" element={<Communications />} />
-                <Route path="social-media" element={<SocialMediaGenerator />} />
-                <Route path="live-site" element={<LiveSite />} />
-                <Route path="advanced-editor" element={<AdvancedEditor />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="templates" element={<TemplatesPage />} />
-              </Route>
-            </Routes>
-          </LiveSiteProvider>
+            {/* 👇 Protected App Dashboard */}
+            <Route
+              path="/app"
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="pets" element={<Pets />} />
+              <Route path="applications" element={<Applications />} />
+              <Route path="campaigns" element={<Campaigns />} />
+              <Route path="inbox" element={<Inbox />} />
+              <Route path="communications" element={<Communications />} />
+              <Route path="social-media" element={<SocialMediaGenerator />} />
+              <Route path="live-site" element={<LiveSite />} />
+              <Route path="advanced-editor" element={<AdvancedEditor />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="templates" element={<TemplatesPage />} />
+            </Route>
+          </Routes>
         </TenantProvider>
       </AuthProvider>
     </Router>

@@ -38,14 +38,14 @@ interface DesignSettings {
   tenant_slug: number
   live_site: number
   template_name: string
-  heading_font_family: string
-  body_font_family: string
+  headingFont: string
+  fontFamily: string
   google_heading_font_link: string
-  google_body_font_link: string
-  primary_color: string
-  secondary_color: string
-  background_color: string
-  font_color: string
+  googleBodyFontLink: string
+  primaryColor: string
+  secondaryColor: string
+  backgroundColor: string
+  fontColor: string
 }
 
 const PublicHomepage: React.FC = () => {
@@ -64,7 +64,7 @@ const PublicHomepage: React.FC = () => {
       document.head.appendChild(headingLink)
 
       const bodyLink = document.createElement("link")
-      bodyLink.href = designSettings.google_body_font_link
+      bodyLink.href = designSettings.googleBodyFontLink
       bodyLink.rel = "stylesheet"
       document.head.appendChild(bodyLink)
 
@@ -185,13 +185,13 @@ const PublicHomepage: React.FC = () => {
 
   const contextDesign = designSettings
     ? {
-        primaryColor: designSettings.primary_color,
-        secondaryColor: designSettings.secondary_color,
-        accentColor: designSettings.primary_color,
-        fontFamily: designSettings.body_font_family,
-        headingFont: designSettings.heading_font_family,
-        backgroundColor: designSettings.background_color,
-        textColor: designSettings.font_color,
+        primaryColor: designSettings.primaryColor,
+        secondaryColor: designSettings.secondaryColor,
+        accentColor: designSettings.primaryColor,
+        fontFamily: designSettings.fontFamily,
+        headingFont: designSettings.headingFont,
+        backgroundColor: designSettings.backgroundColor,
+        textColor: designSettings.fontColor,
         borderRadius: "0.75rem",
         shadowStyle: "shadow-lg",
       }

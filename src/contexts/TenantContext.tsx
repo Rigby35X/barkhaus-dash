@@ -12,9 +12,18 @@ interface Organization {
   taxId?: string;
 }
 
-interface TenantContextType {
+interface Tenant {
+  id: string;
+  name: string;
+  // Add other tenant properties as needed
+}
+
+export interface TenantContextType {
   organization: Organization | null;
   updateOrganization: (org: Partial<Organization>) => void;
+  tenants: Tenant[];
+  currentTenant: Tenant | null;
+  selectTenant: (t: Tenant) => void;
 }
 
 export const TenantContext = createContext<TenantContextType | undefined>(undefined);
@@ -30,10 +39,12 @@ export const useTenant = () => {
 export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAuth();
   const [organization, setOrganization] = useState<Organization | null>(null);
+  const [tenants, setTenants] = useState<Tenant[]>([]);
+  const [currentTenant, setCurrentTenant] = useState<Tenant | null>(null);
 
   useEffect(() => {
     if (user) {
-      // Mock organization data - in real app, this would fetch from Supabase
+      // Mock organization data
       const mockOrg: Organization = {
         id: user.organizationId,
         name: 'Happy Paws Rescue',
@@ -55,9 +66,16 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  const selectTenant = (tenant: Tenant) => {
+    setCurrentTenant(tenant);
+  };
+
   const value = {
     organization,
-    updateOrganization
+    updateOrganization,
+    tenants,
+    currentTenant,
+    selectTenant
   };
 
   return <TenantContext.Provider value={value}>{children}</TenantContext.Provider>;

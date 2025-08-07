@@ -27,7 +27,7 @@ interface Pet {
 interface LiveSiteData {
   site_name: string
   logo_url: string
-  primary_color: string
+  primaryColor: string
   contact_info: {
     phone: string
     email: string

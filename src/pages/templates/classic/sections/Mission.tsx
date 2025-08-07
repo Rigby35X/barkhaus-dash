@@ -1,13 +1,14 @@
-const Mission = () => {
+import { useLiveSite } from '../../../../contexts/LiveSiteContext';
 
+const Mission = () => {
+  const config = useLiveSite();
+  if (!config) return null;
 
   return (
-    <section className="py-12 bg-white text-center">
-      <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-4">Our Mission</h2>
-        <p className="text-lg text-gray-700">
-          {'We’re here to rescue dogs and find them homes.'}
-        </p>
+    <section className="bg-white py-16">
+      <div className="max-w-4xl mx-auto px-4 text-center">
+        <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
+        <p className="text-gray-700 text-lg">{config.mission}</p>
       </div>
     </section>
   );

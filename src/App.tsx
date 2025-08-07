@@ -23,6 +23,7 @@ import Register from './pages/Register';
 import TemplatesPage from './pages/templates';
 import TemplatesDashboard from './pages/TemplatesDashboard';
 import TemplatePreview from './pages/TemplatePreview';
+import PreviewPage from './pages/preview';
 
 
 function App() {
@@ -30,40 +31,44 @@ function App() {
     <Router>
       <AuthProvider>
         <TenantProvider>
-          <Routes>
-            {/* 👇 Home */}
-            <Route path="/" element={<LandingPage />} />
+         <Routes>
+  {/* 👇 Home */}
+  <Route path="/" element={<LandingPage />} />
 
-            {/* 👇 Template Library + Preview */}
-            <Route path="/templates" element={<TemplatesDashboard />} />
-            <Route path="/preview" element={<TemplatePreview />} />
+  {/* 👇 Template Library + Preview */}
+  <Route path="/templates" element={<TemplatesDashboard />} />
+  <Route path="/preview" element={<PreviewPage />} />
 
-            {/* 👇 Auth Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+  {/* 👇 Public LiveSite Preview */}
+  <Route path="/:tenantSlug/live-site" element={<LiveSite />} />
 
-            {/* 👇 Protected App Dashboard */}
-            <Route
-              path="/app"
-              element={
-                <ProtectedRoute>
-                  <Layout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Dashboard />} />
-              <Route path="pets" element={<Pets />} />
-              <Route path="applications" element={<Applications />} />
-              <Route path="campaigns" element={<Campaigns />} />
-              <Route path="inbox" element={<Inbox />} />
-              <Route path="communications" element={<Communications />} />
-              <Route path="social-media" element={<SocialMediaGenerator />} />
-              <Route path="live-site" element={<LiveSite />} />
-              <Route path="advanced-editor" element={<AdvancedEditor />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="templates" element={<TemplatesPage />} />
-            </Route>
-          </Routes>
+  {/* 👇 Auth Routes */}
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+
+  {/* 👇 Protected App Dashboard */}
+  <Route
+    path="/app"
+    element={
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    }
+  >
+    <Route index element={<Dashboard />} />
+    <Route path="pets" element={<Pets />} />
+    <Route path="applications" element={<Applications />} />
+    <Route path="campaigns" element={<Campaigns />} />
+    <Route path="inbox" element={<Inbox />} />
+    <Route path="communications" element={<Communications />} />
+    <Route path="social-media" element={<SocialMediaGenerator />} />
+    <Route path="live-site" element={<LiveSite />} />
+    <Route path="advanced-editor" element={<AdvancedEditor />} />
+    <Route path="settings" element={<Settings />} />
+    <Route path="templates" element={<TemplatesPage />} />
+  </Route>
+</Routes>
+
         </TenantProvider>
       </AuthProvider>
     </Router>

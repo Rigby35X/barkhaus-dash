@@ -23,6 +23,7 @@ import Register from './pages/Register';
 import TemplatesPage from './pages/templates';
 import TemplatesDashboard from './pages/TemplatesDashboard';
 import TemplatePreview from './pages/TemplatePreview';
+import EditorPage from './pages/EditorPage';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
               <Route path="communications" element={<Communications />} />
               <Route path="social-media" element={<SocialMediaGenerator />} />
               <Route path="live-site" element={<LiveSite />} />
+              <Route path="editor" element={<EditorPage />} />
               <Route path="advanced-editor" element={<AdvancedEditor />} />
               <Route path="settings" element={<Settings />} />
               <Route path="templates" element={<TemplatesPage />} />

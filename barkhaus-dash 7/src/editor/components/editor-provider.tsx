@@ -1,9 +1,9 @@
 'use client'
 
 import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useOrg } from '@/components/org-provider'
-import { withXanoAuth } from '@/components/xano-auth-client'
+import { usePathname, useSearchParams } from '@/editor/router-shims'
+import { useOrg } from '@/editor/components/org-provider'
+import { withXanoAuth } from '@/editor/components/xano-auth-client'
 
 interface EditorState {
   isEditing: boolean

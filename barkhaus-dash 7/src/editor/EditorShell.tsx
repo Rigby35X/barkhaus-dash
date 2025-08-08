@@ -4,10 +4,12 @@ import { getDesignSettings, getLiveSite, getPages, savePage, publish } from './a
 // TODO: update these imports to your actual paths
 // @ts-ignore
 import { useTenant } from '@/contexts/TenantContext'
-import InlineCanvas from './components/InlineCanvas'
+import { WebsitePreview } from './components/website-preview'
 import { applyDesignToDocument } from './design-theme'
-import Sidebar from './components/Sidebar'
+import { InlineEditor } from './components/inline-editor'
 
+import { EditorProvider } from './components/editor-provider'
+import { OrgProvider } from './components/org-provider'
 export default function EditorShell() {
   // @ts-ignore
   const { currentTenant } = useTenant()
@@ -37,14 +39,18 @@ export default function EditorShell() {
   if (loading) return <div className="p-6">Loading editor…</div>
 
   return (
-    <div className="flex h-[calc(100vh-64px)]">
-      <Sidebar
+    <OrgProvider>
+      <EditorProvider>
+        <div className="flex h-[calc(100vh-64px)]">
+      <InlineEditor
         design={design}
         pages={pages}
         onSave={async (payload:any) => { await savePage(payload) }}
         onPublish={async (pageSlug?: string) => { await publish({ pageSlug, tenant_id: currentTenant.id }) }}
       />
-      <InlineCanvas tenant={currentTenant} design={design} live={live} />
-    </div>
+      <WebsitePreview />
+        </div>
+      </EditorProvider>
+    </OrgProvider>
   )
 }

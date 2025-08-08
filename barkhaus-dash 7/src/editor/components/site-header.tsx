@@ -1,7 +1,7 @@
 "use client"
 
 import Link from '@/editor/next-shims'
-import { usePathname } from "next/navigation"
+import { usePathname } from '@/editor/router-shims'
 import { Menu, PawPrint, ChevronDown } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"

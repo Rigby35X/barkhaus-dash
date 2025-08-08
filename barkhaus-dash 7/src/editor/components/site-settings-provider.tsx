@@ -1,8 +1,8 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { useOrg } from '@/components/org-provider'
-import { withXanoAuth } from '@/components/xano-auth-client'
+import { useOrg } from '@/editor/components/org-provider'
+import { withXanoAuth } from '@/editor/components/xano-auth-client'
 
 export type SiteSettings = {
   orgName: string

@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from '@/editor/router-shims'
 
 type OrgContextValue = {
   orgId: string

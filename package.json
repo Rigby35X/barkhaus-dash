@@ -15,6 +15,8 @@
     "@types/uuid": "^9.0.7",
     "grapesjs-plugin-export": "^1.0.12",
     "grapesjs-preset-webpage": "^1.0.3",
+    "jose": "^6.0.12",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,6 +24,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",

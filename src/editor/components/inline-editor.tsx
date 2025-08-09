@@ -26,6 +26,14 @@ export default function InlineEditor({
   const { state, dispatch } = useEditor();
   const { orgId } = useOrg();
 
+  if (!orgId) {
+    return (
+      <div className="text-sm text-muted-foreground">
+        Editor unavailable: no org selected.
+      </div>
+    );
+  }
+
   if (!state.isEditing) return null
 
   const handleSave = async () => {

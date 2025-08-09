@@ -25,9 +25,10 @@ export default function EditorShell() {
           </div>
 
           {/* Live site preview */}
-          <div className="flex-1 min-w-0">
-            <WebsitePreview />
+          <div className="w-[360px] shrink-0">
+            <InlineEditor />
           </div>
+
         </div>
       </EditorProvider>
     </OrgProvider>

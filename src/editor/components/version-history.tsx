@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/editor/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/editor/components/ui/card'
-import { Badge } from '@/editor/components/ui/badge'
-import { ScrollArea } from '@/editor/components/ui/scroll-area'
+import { Button } from './ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Badge } from './ui/badge'
+import { ScrollArea } from './ui/scroll-area'
 import { History, RotateCcw, Eye, User, Clock } from 'lucide-react'
 
 interface Version {

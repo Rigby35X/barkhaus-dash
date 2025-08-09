@@ -3,10 +3,10 @@
 import Link from '@/editor/next-shims'
 import { usePathname } from '@/editor/router-shims'
 import { Menu, PawPrint, ChevronDown } from 'lucide-react'
-import { Button } from "@/editor/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/editor/components/ui/sheet"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/editor/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
+import { Button } from "./ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { cn } from "../../lib/utils"
 import { useEditor } from "@/components/editor-provider"
 import { useSiteSettings } from "@/components/site-settings-provider"
 

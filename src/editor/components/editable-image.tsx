@@ -2,7 +2,7 @@
 
 import { CSSProperties } from 'react'
 import { useEditor } from './editor-provider'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 
 interface EditableImageProps {
   id: string

@@ -3,7 +3,7 @@
 import { ReactNode, CSSProperties } from 'react'
 import { useEditor } from './editor-provider'
 import { Edit3, Edit } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 
 interface EditableElementProps {
   id: string

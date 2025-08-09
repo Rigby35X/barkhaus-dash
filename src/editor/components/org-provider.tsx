@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react'
-import { useSearchParams } from '@/editor/router-shims'
+import { useSearchParams } from '../router-shims'
 
 type OrgContextValue = {
   orgId: string
@@ -18,7 +18,7 @@ export function OrgProvider({ children }: { children: ReactNode }) {
     // Priority: ?orgId= -> localStorage -> NEXT_PUBLIC_DEFAULT_ORG_ID -> 'default'
     const fromQuery = params.get('orgId')
     const stored = typeof window !== 'undefined' ? localStorage.getItem('orgId') : null
-    const envDefault = process.env.NEXT_PUBLIC_DEFAULT_ORG_ID
+    const envDefault = import.meta.env.VITE_DEFAULT_ORG_ID
     const resolved = fromQuery || stored || envDefault || 'default'
     setOrgId(resolved)
   }, [params])

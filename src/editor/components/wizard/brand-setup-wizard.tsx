@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/editor/components/ui/button'
-import { Input } from '@/editor/components/ui/input'
-import { Progress } from '@/editor/components/ui/progress'
-import { Card, CardContent, CardHeader, CardTitle } from '@/editor/components/ui/card'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Progress } from '../ui/progress'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 
 // Lightweight mock of the shared screenshot for UX reference.
 const steps = [

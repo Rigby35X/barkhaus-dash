@@ -3,8 +3,8 @@
 import Link from '@/editor/next-shims'
 import { CSSProperties, ReactNode } from 'react'
 import { useEditor } from './editor-provider'
-import { Button } from '@/editor/components/ui/button'
-import { cn } from '@/lib/utils'
+import { Button } from './ui/button'
+import { cn } from '../../lib/utils'
 
 interface EditableButtonProps {
   id: string

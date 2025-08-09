@@ -4,16 +4,27 @@ import React from 'react'
 import { useEditor } from './editor-provider'
 import { useOrg } from './org-provider'
 import { withXanoAuth } from './xano-auth-client'
-import { Button } from '@/editor/components/ui/button'
-import { Badge } from '@/editor/components/ui/badge'
-import { Separator } from '@/editor/components/ui/separator'
+import { Button } from './ui/button'
+import { Badge } from './ui/badge'
+import { Separator } from './ui/separator'
 import { X, Save, Eye, EyeOff, Type, Palette, Undo, Redo } from 'lucide-react'
 import { ElementEditor } from './element-editor'
-import { InlineEditorProps } from '../EditorShell'
+type InlineEditorProps = {
+  design?: any;
+  pages?: any[];
+  onSave?: (payload: any) => Promise<any> | void;
+  onPublish?: (pageSlug?: string) => Promise<any> | void;
+};
 
-export default function InlineEditor({ design, pages, onSave, onPublish }: InlineEditorProps) {
-  const { state, dispatch } = useEditor()
-  const { orgId } = useOrg()
+
+export default function InlineEditor({
+  design,
+  pages,
+  onSave = async () => {},
+  onPublish = async () => {},
+}: InlineEditorProps) {
+  const { state, dispatch } = useEditor();
+  const { orgId } = useOrg();
 
   if (!state.isEditing) return null
 

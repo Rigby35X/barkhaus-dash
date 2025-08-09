@@ -2,8 +2,8 @@
 
 import { useEditor } from './editor-provider'
 import { EditableElement } from './editable-element'
-import { Button } from '@/editor/components/ui/button'
-import { cn } from '@/lib/utils'
+import { Button } from './ui/button'
+import { cn } from '../../lib/utils'
 
 export function WebsitePreview() {
   const { state } = useEditor()

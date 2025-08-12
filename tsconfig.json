@@ -1,35 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Disable unused‐locals/parameters errors so build passes */
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-
-    /* Keep other strict checks */
-    "noFallthroughCasesInSwitch": true,
-    "strict": true,
-
-    /* Teach TS about import.meta.env.VITE_* */
-    "types": ["vite/client"]
+    "jsx": "preserve",
+    "incremental": true
   },
-  "include": [
-    "src",
-    "src/vite-env.d.ts"     // ← add this
-  ],
-  "references": [
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

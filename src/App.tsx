@@ -5,25 +5,25 @@ import { TenantProvider } from './contexts/TenantContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 
-import LandingPage from './pages/LandingPage';
-import Dashboard from './pages/Dashboard';
-import Pets from './pages/Pets';
-import Applications from './pages/Applications';
-import Campaigns from './pages/Campaigns';
-import Inbox from './pages/Inbox';
-import Communications from './pages/Communications';
-import SocialMediaGenerator from './pages/SocialMediaGenerator';
-import LiveSite from './pages/LiveSite';
-import Settings from './pages/Settings';
-import AdvancedEditor from './pages/AdvancedEditor';
+import LandingPage from './routes/LandingPage';
+import Dashboard from './routes/Dashboard';
+import Pets from './routes/Pets';
+import Applications from './routes/Applications';
+import Campaigns from './routes/Campaigns';
+import Inbox from './routes/Inbox';
+import Communications from './routes/Communications';
+import SocialMediaGenerator from './routes/SocialMediaGenerator';
+import LiveSite from './routes/LiveSite';
+import Settings from './routes/Settings';
+import AdvancedEditor from './routes/AdvancedEditor';
 
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './routes/Login';
+import Register from './routes/Register';
 
-import TemplatesPage from './pages/templates';
-import TemplatesDashboard from './pages/TemplatesDashboard';
-import TemplatePreview from './pages/TemplatePreview';
-import EditorPage from './pages/EditorPage';
+import TemplatesPage from './routes/templates';
+import TemplatesDashboard from './routes/TemplatesDashboard';
+import TemplatePreview from './routes/TemplatePreview';
+import EditorPage from './routes/EditorPage';
 
 
 function App() {

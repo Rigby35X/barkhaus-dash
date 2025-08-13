@@ -1,10 +1,11 @@
 import ClassicHomepage from "./templates/classic/ClassicHomepage"
+import ModernHomepage from "./templates/modern/ModernHomepage"
 import PublicLayout from "../components/PublicLayout"
 import { LiveSiteProvider } from "../contexts/LiveSiteContext"
 import type { DesignSettings, LiveSiteConfig } from "../services/xanoApi"
 
 // Mock organization data - in a real app, this would come from API/database
-const getOrganizationData = (orgId?: string) => {
+const getOrganizationData = (_orgId?: string) => {
   // This would typically fetch from your backend based on orgId
   return {
     organization: {
@@ -132,16 +133,16 @@ const TemplatePreview = () => {
     liveSite: 1,
     templateName: "classic",
     headingFont: designSettings?.headingFont || "Inter",
-    fontFamily: designSettings?.fontFamily || "Inter",
-    googleHeadingFontLink: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
-    googleBodyFontLink: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap",
+    bodyFont: designSettings?.fontFamily || "Inter",
+    google_heading_font_link: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
+    google_body_font_link: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap",
     primaryColor: designSettings?.primaryColor || "#3B82F6",
     secondaryColor: designSettings?.secondaryColor || "#8B5CF6",
     accentColor: designSettings?.accentColor || "#10B981",
     backgroundColor: "#FFFFFF",
-    textColor: "#1F2937",
-    borderRadius: "0.75rem",
-    shadowStyle: "shadow-lg",
+    fontColor: "#1F2937",
+    border_radius: "0.75rem",
+    shadow_style: "shadow-lg",
   }
 
   const renderTemplate = () => {
@@ -150,6 +151,12 @@ const TemplatePreview = () => {
         return (
           <LiveSiteProvider initialData={transformedLiveSiteConfig} initialDesign={transformedDesignSettings}>
             <ClassicHomepage />
+          </LiveSiteProvider>
+        )
+      case "modern":
+        return (
+          <LiveSiteProvider initialData={transformedLiveSiteConfig} initialDesign={transformedDesignSettings}>
+            <ModernHomepage />
           </LiveSiteProvider>
         )
       default:

@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom"
 // Fix this import path:
 import { LiveSiteProvider } from "../../contexts/LiveSiteContext"
 import ClassicHomepage from "../templates/classic/ClassicHomepage"
+import ModernHomepage from "../templates/modern/ModernHomepage"
 import type { DesignSettings, LiveSiteConfig } from "../../services/xanoApi"
 
 interface LiveSiteData {
@@ -201,6 +202,9 @@ const PublicHomepage: React.FC = () => {
 
     switch (templateName) {
       case "classic":
+        return <ClassicHomepage />
+      case "modern":
+        return <ModernHomepage />
       default:
         return <ClassicHomepage />
     }

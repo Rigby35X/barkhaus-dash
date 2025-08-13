@@ -2,34 +2,28 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "skipLibCheck": true,
-
-    /* Bundler mode */
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Disable unused‐locals/parameters errors so build passes */
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-
-    /* Keep other strict checks */
-    "noFallthroughCasesInSwitch": true,
-    "strict": true,
-
-    /* Teach TS about import.meta.env.VITE_* */
-    "types": ["vite/client"]
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"],
+      "react-router-dom": ["./components/admin/react-router-compat"]
+    }
   },
-  "include": [
-    "src",
-    "src/vite-env.d.ts"     // ← add this
-  ],
-  "references": [
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "imported/dash/node_modules"]
 }

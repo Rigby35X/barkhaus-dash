@@ -39,7 +39,7 @@ export const useTenant = () => {
 export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAuth();
   const [organization, setOrganization] = useState<Organization | null>(null);
-  const [tenants, setTenants] = useState<Tenant[]>([]);
+  const [tenants, _setTenants] = useState<Tenant[]>([]);
   const [currentTenant, setCurrentTenant] = useState<Tenant | null>(null);
 
   useEffect(() => {

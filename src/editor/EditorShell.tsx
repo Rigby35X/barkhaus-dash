@@ -6,7 +6,7 @@ import { EditorProvider } from './components/editor-provider';
 
 // Actual editor UI
 import InlineEditor from './components/inline-editor';
-import { WebsitePreview } from './components/website-preview';
+// import { WebsitePreview } from './components/website-preview';
 
 // (optional) theme mapping if you want CSS vars from design settings
 // import { applyDesignToDocument } from './design-theme';

@@ -1,0 +1,386 @@
+<!-- src/_includes/components/animal-detail.html -->
+<div id="animal-detail-container" class="container mx-auto px-4 py-8">
+    <!-- Loading state -->
+    <div id="animal-loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <p class="mt-2 text-gray-600">Loading animal details...</p>
+    </div>
+
+    <!-- Animal detail content -->
+    <div id="animal-detail-content" class="hidden">
+        <!-- Back button -->
+        <div class="mb-6">
+            <a href="/animals" class="inline-flex items-center text-primary hover:text-primary-dark transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Animals
+            </a>
+        </div>
+
+        <!-- Main content grid -->
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Image gallery -->
+            <div class="space-y-4">
+                <div class="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                    <img id="main-image" src="" alt="" class="w-full h-full object-cover">
+                </div>
+                
+                <!-- Thumbnail gallery -->
+                <div id="thumbnail-gallery" class="flex gap-2 overflow-x-auto pb-2">
+                    <!-- Thumbnails will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Animal info -->
+            <div class="space-y-6">
+                <!-- Basic info -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h1 id="animal-name" class="text-3xl font-bold text-gray-900"></h1>
+                        <span id="animal-status" class="px-3 py-1 rounded-full text-sm font-medium"></span>
+                    </div>
+                    <div id="animal-basic-info" class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                        <!-- Basic info will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">About <span id="about-name"></span></h3>
+                    <p id="animal-description" class="text-gray-700 leading-relaxed"></p>
+                </div>
+
+                <!-- Adoption info -->
+                <div id="adoption-info" class="bg-primary/5 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Adoption Information</h3>
+                    <div id="adoption-details" class="space-y-2">
+                        <!-- Adoption details will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Medical & behavioral info -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Medical info -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">Medical Information</h3>
+                        <div id="medical-info" class="space-y-2">
+                            <!-- Medical info will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Behavioral info -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">Personality & Behavior</h3>
+                        <div id="behavioral-info" class="space-y-2">
+                            <!-- Behavioral info will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special notes -->
+                <div id="special-notes-section" class="hidden">
+                    <h3 class="text-lg font-semibold mb-3">Special Notes</h3>
+                    <div id="special-notes" class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <!-- Special notes will be populated here -->
+                    </div>
+                </div>
+
+                <!-- CTA buttons -->
+                <div class="flex gap-4 pt-4">
+                    <button id="adopt-btn" class="flex-1 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+                        Adopt <span id="cta-name"></span>
+                    </button>
+                    <button id="inquire-btn" class="flex-1 border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
+                        Ask About <span id="inquire-name"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error state -->
+    <div id="animal-error" class="hidden text-center py-12">
+        <div class="text-red-600 mb-4">
+            <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Animal Not Found</h2>
+        <p class="text-gray-600 mb-6">We couldn't find the animal you're looking for.</p>
+        <a href="/animals" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+            View All Animals
+        </a>
+    </div>
+</div>
+
+<script>
+class AnimalDetailPage {
+    constructor() {
+        this.animalId = this.getAnimalIdFromUrl();
+        this.init();
+    }
+
+    getAnimalIdFromUrl() {
+        // Extract animal ID from URL path
+        const pathParts = window.location.pathname.split('/');
+        return pathParts[pathParts.length - 1];
+    }
+
+    async init() {
+        if (!this.animalId) {
+            this.showError();
+            return;
+        }
+
+        try {
+            await this.loadAnimalData();
+        } catch (error) {
+            console.error('Error loading animal:', error);
+            this.showError();
+        }
+    }
+
+    async loadAnimalData() {
+        // Try to get animal data from embedded data first
+        if (window.xanoData && window.xanoData.currentAnimal) {
+            this.renderAnimal(window.xanoData.currentAnimal);
+            return;
+        }
+
+        // Fallback to API call (if you have client-side API)
+        // This would require setting up a client-side API endpoint
+        throw new Error('Animal data not found');
+    }
+
+    renderAnimal(animal) {
+        // Hide loading, show content
+        document.getElementById('animal-loading').classList.add('hidden');
+        document.getElementById('animal-detail-content').classList.remove('hidden');
+
+        // Populate basic info
+        document.getElementById('animal-name').textContent = animal.name;
+        document.getElementById('about-name').textContent = animal.name;
+        document.getElementById('cta-name').textContent = animal.name;
+        document.getElementById('inquire-name').textContent = animal.name;
+
+        // Status badge
+        const statusEl = document.getElementById('animal-status');
+        statusEl.textContent = animal.status;
+        statusEl.className = `px-3 py-1 rounded-full text-sm font-medium ${this.getStatusClasses(animal.status)}`;
+
+        // Main image
+        const mainImage = document.getElementById('main-image');
+        mainImage.src = animal.image_url || '/placeholder-dog.jpg';
+        mainImage.alt = animal.name;
+
+        // Image gallery
+        this.renderImageGallery(animal);
+
+        // Basic info grid
+        this.renderBasicInfo(animal);
+
+        // Description
+        document.getElementById('animal-description').textContent = 
+            animal.description_long || animal.description || 'No description available.';
+
+        // Adoption info
+        this.renderAdoptionInfo(animal);
+
+        // Medical info
+        this.renderMedicalInfo(animal);
+
+        // Behavioral info
+        this.renderBehavioralInfo(animal);
+
+        // Special notes
+        this.renderSpecialNotes(animal);
+    }
+
+    renderImageGallery(animal) {
+        const gallery = document.getElementById('thumbnail-gallery');
+        const images = animal.images || [];
+        
+        if (animal.image_url) {
+            images.unshift({ url: animal.image_url });
+        }
+
+        gallery.innerHTML = images.map((img, index) => `
+            <button class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-colors" 
+                    onclick="this.changeMainImage('${img.url}')">
+                <img src="${img.url}" alt="Photo ${index + 1}" class="w-full h-full object-cover">
+            </button>
+        `).join('');
+    }
+
+    changeMainImage(imageUrl) {
+        document.getElementById('main-image').src = imageUrl;
+    }
+
+    renderBasicInfo(animal) {
+        const basicInfo = document.getElementById('animal-basic-info');
+        const info = [
+            { label: 'Species', value: animal.species },
+            { label: 'Breed', value: animal.breed },
+            { label: 'Age', value: animal.age },
+            { label: 'Gender', value: animal.gender },
+            { label: 'Weight', value: animal.weight },
+            { label: 'Size', value: animal.size },
+            { label: 'Color', value: animal.color }
+        ].filter(item => item.value);
+
+        basicInfo.innerHTML = info.map(item => `
+            <div class="flex justify-between">
+                <span class="font-medium">${item.label}:</span>
+                <span>${item.value}</span>
+            </div>
+        `).join('');
+    }
+
+    renderAdoptionInfo(animal) {
+        const adoptionDetails = document.getElementById('adoption-details');
+        const details = [];
+
+        if (animal.adoption_fee) {
+            const currency = animal.adoption_fee_currency || 'USD';
+            const symbol = currency === 'USD' ? '$' : currency;
+            details.push(`<div class="flex justify-between"><span>Adoption Fee:</span><span class="font-semibold">${symbol}${animal.adoption_fee}</span></div>`);
+        }
+
+        if (animal.intake_date) {
+            const date = new Date(animal.intake_date).toLocaleDateString();
+            details.push(`<div class="flex justify-between"><span>In Our Care Since:</span><span>${date}</span></div>`);
+        }
+
+        if (animal.location) {
+            details.push(`<div class="flex justify-between"><span>Current Location:</span><span>${animal.location}</span></div>`);
+        }
+
+        adoptionDetails.innerHTML = details.join('');
+    }
+
+    renderMedicalInfo(animal) {
+        const medicalInfo = document.getElementById('medical-info');
+        const checkIcon = '✅';
+        const xIcon = '❌';
+        const unknownIcon = '❓';
+
+        const getIcon = (value) => {
+            if (value === true) return checkIcon;
+            if (value === false) return xIcon;
+            return unknownIcon;
+        };
+
+        const info = [
+            { label: 'Vaccinated', value: animal.vaccinated, icon: getIcon(animal.vaccinated) },
+            { label: 'Spayed/Neutered', value: animal.spayed_neutered, icon: getIcon(animal.spayed_neutered) },
+            { label: 'Microchipped', value: animal.microchip, icon: getIcon(animal.microchip) }
+        ];
+
+        medicalInfo.innerHTML = info.map(item => `
+            <div class="flex items-center justify-between">
+                <span>${item.label}:</span>
+                <span>${item.icon}</span>
+            </div>
+        `).join('');
+
+        if (animal.medical_notes) {
+            medicalInfo.innerHTML += `
+                <div class="mt-3 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-blue-800">${animal.medical_notes}</p>
+                </div>
+            `;
+        }
+    }
+
+    renderBehavioralInfo(animal) {
+        const behavioralInfo = document.getElementById('behavioral-info');
+        const checkIcon = '✅';
+        const xIcon = '❌';
+        const unknownIcon = '❓';
+
+        const getIcon = (value) => {
+            if (value === true) return checkIcon;
+            if (value === false) return xIcon;
+            return unknownIcon;
+        };
+
+        const info = [
+            { label: 'House Trained', value: animal.house_trained, icon: getIcon(animal.house_trained) },
+            { label: 'Good with Kids', value: animal.good_with_kids, icon: getIcon(animal.good_with_kids) },
+            { label: 'Good with Dogs', value: animal.good_with_dogs, icon: getIcon(animal.good_with_dogs) },
+            { label: 'Good with Cats', value: animal.good_with_cats, icon: getIcon(animal.good_with_cats) }
+        ];
+
+        if (animal.energy_level) {
+            info.push({ label: 'Energy Level', value: animal.energy_level, icon: '' });
+        }
+
+        behavioralInfo.innerHTML = info.map(item => `
+            <div class="flex items-center justify-between">
+                <span>${item.label}:</span>
+                <span>${item.icon} ${item.value === true ? 'Yes' : item.value === false ? 'No' : item.value || 'Unknown'}</span>
+            </div>
+        `).join('');
+
+        if (animal.training_notes) {
+            behavioralInfo.innerHTML += `
+                <div class="mt-3 p-3 bg-green-50 rounded-lg">
+                    <p class="text-sm text-green-800"><strong>Training Notes:</strong> ${animal.training_notes}</p>
+                </div>
+            `;
+        }
+    }
+
+    renderSpecialNotes(animal) {
+        const section = document.getElementById('special-notes-section');
+        const notes = document.getElementById('special-notes');
+        
+        const specialInfo = [];
+        
+        if (animal.special_needs) {
+            specialInfo.push(`<strong>Special Needs:</strong> ${animal.special_needs}`);
+        }
+        
+        if (animal.playgroup_notes) {
+            specialInfo.push(`<strong>Playgroup Notes:</strong> ${animal.playgroup_notes}`);
+        }
+
+        if (animal.org_description) {
+            specialInfo.push(`<strong>Additional Info:</strong> ${animal.org_description}`);
+        }
+
+        if (specialInfo.length > 0) {
+            section.classList.remove('hidden');
+            notes.innerHTML = specialInfo.join('<br><br>');
+        }
+    }
+
+    getStatusClasses(status) {
+        switch (status?.toLowerCase()) {
+            case 'available':
+                return 'bg-green-100 text-green-800';
+            case 'pending':
+                return 'bg-yellow-100 text-yellow-800';
+            case 'adopted':
+                return 'bg-blue-100 text-blue-800';
+            case 'foster':
+                return 'bg-purple-100 text-purple-800';
+            case 'hold':
+                return 'bg-orange-100 text-orange-800';
+            default:
+                return 'bg-gray-100 text-gray-800';
+        }
+    }
+
+    showError() {
+        document.getElementById('animal-loading').classList.add('hidden');
+        document.getElementById('animal-error').classList.remove('hidden');
+    }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new AnimalDetailPage();
+});
+</script>

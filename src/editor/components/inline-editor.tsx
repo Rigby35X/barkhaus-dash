@@ -12,16 +12,16 @@ import { ElementEditor } from './element-editor'
 type InlineEditorProps = {
   design?: any;
   pages?: any[];
-  onSave?: (payload: any) => Promise<any> | void;
-  onPublish?: (pageSlug?: string) => Promise<any> | void;
+  onSaveAction?: (payload: any) => Promise<any> | void;
+  onPublishAction?: (pageSlug?: string) => Promise<any> | void;
 };
 
 
 export default function InlineEditor({
-  design,
-  pages,
-  onSave = async () => {},
-  onPublish = async () => {},
+  design: _design,
+  pages: _pages,
+  onSaveAction: _onSaveAction = async () => {},
+  onPublishAction: _onPublishAction = async () => {},
 }: InlineEditorProps) {
   const { state, dispatch } = useEditor();
   const { orgId } = useOrg();

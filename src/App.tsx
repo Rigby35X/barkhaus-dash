@@ -24,6 +24,7 @@ import TemplatesPage from './pages/templates';
 import TemplatesDashboard from './pages/TemplatesDashboard';
 import TemplatePreview from './pages/TemplatePreview';
 import EditorPage from './pages/EditorPage';
+import BrandSetup from './pages/BrandSetup';
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
               <Route path="live-site" element={<LiveSite />} />
               <Route path="editor" element={<EditorPage />} />
               <Route path="advanced-editor" element={<AdvancedEditor />} />
+              <Route path="brand-setup" element={<BrandSetup />} />
               <Route path="settings" element={<Settings />} />
               <Route path="templates" element={<TemplatesPage />} />
             </Route>

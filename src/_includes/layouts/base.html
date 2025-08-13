@@ -1,0 +1,107 @@
+<!-- src/_includes/layouts/base.html - Enhanced with dynamic styling -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ xano.content.site_name or "Rescue Site" }}</title>
+    
+    <!-- Dynamic Font Loading -->
+    {% for fontLink in xano.branding.fontLinks %}
+    <link href="{{ fontLink }}" rel="stylesheet">
+    {% endfor %}
+    
+    <!-- Dynamic CSS Variables -->
+    <style>
+        :root {
+        }
+        {% if xano.branding.cssVariables %}
+            <style>
+            :root {
+                {% for property, value in xano.branding.cssVariables.items() %}
+                --{{ property }}: {{ value }};
+                {% endfor %}
+            }
+            </style>
+        {% endif %}
+        /* Apply dynamic colors to components */
+        .header, .navbar {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+        
+        .footer {
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--heading-font);
+            color: var(--font-color);
+        }
+        
+        body, p, span, div {
+            font-family: var(--body-font);
+            color: var(--font-color);
+            background-color: var(--background-color);
+        }
+        
+        a {
+            color: var(--primary-color);
+        }
+        
+        a:hover {
+            color: var(--secondary-color);
+        }
+    </style>
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Dynamic Logo -->
+    {% if xano.content.logo_url %}
+    <style>
+        .logo-container img {
+            content: url('{{ xano.content.logo_url }}');
+        }
+    </style>
+    {% endif %}
+
+    <!-- Content -->
+    {{ content | safe }}
+
+    <!-- Embed all Xano data for client-side access -->
+    <script>
+        window.xanoData = {{ xano | dump | safe }};
+        
+        // Apply any additional dynamic styling
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Xano styling applied');
+            
+            // Update page title dynamically
+            if (window.xanoData.content && window.xanoData.content.site_name) {
+                document.title = window.xanoData.content.site_name;
+            }
+            
+            // Update favicon if provided  
+            if (window.xanoData.branding && window.xanoData.branding.favicon_url) {
+                const favicon = document.querySelector('link[rel="icon"]') || document.createElement('link');
+                favicon.rel = 'icon';
+                favicon.href = window.xanoData.branding.favicon_url;
+                document.head.appendChild(favicon);
+            }
+        });
+    </script>
+</body>
+</html>

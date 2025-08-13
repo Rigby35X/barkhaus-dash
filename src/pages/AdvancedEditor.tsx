@@ -27,7 +27,7 @@ const AdvancedEditor: React.FC = () => {
   const tenantId = organization ? Number(organization.id) : null;
   useEffect(() => {
     if (tenantId !== null) {
-      getPages(tenantId).then(setPages).catch(console.error);
+      getPages().then(setPages).catch(console.error);
     }
   }, [tenantId]);
 
@@ -39,7 +39,7 @@ const AdvancedEditor: React.FC = () => {
 
     const run = async () => {
       try {
-        const page = await getPageBySlug(tenantId, slug);
+        const page = await getPageBySlug(slug);
         let comps: any[] = [];
         if (page?.content_json) {
           try {

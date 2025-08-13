@@ -13,6 +13,13 @@ export const templates = [
     image: '/template-thumbnails/project-bolt.jpg',
     description: 'Sleek and bold—great for standout branding.',
     previewUrl: '/preview?template=project-bolt'
+  },
+  {
+    id: 'modern',
+    name: 'Modern Rescue',
+    image: '/template-thumbnails/modern.jpg',
+    description: 'A contemporary design with gradient backgrounds and modern typography.',
+    previewUrl: '/preview?template=modern'
   }
   // You can add more
 ];

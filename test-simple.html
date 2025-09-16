@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Simple Test Page</h1>
+    <p>If you can see this, basic HTML works.</p>
+    
+    <div id="test-results">
+        <h2>Test Results:</h2>
+        <div id="js-test" class="error">❌ JavaScript not working</div>
+        <div id="fetch-test" class="error">❌ Fetch not tested</div>
+    </div>
+
+    <script>
+        console.log('🧪 Simple test starting...');
+        
+        // Test 1: Basic JavaScript
+        document.getElementById('js-test').innerHTML = '✅ JavaScript working';
+        document.getElementById('js-test').className = 'success';
+        
+        // Test 2: Fetch API
+        fetch('/')
+            .then(response => {
+                document.getElementById('fetch-test').innerHTML = '✅ Fetch API working';
+                document.getElementById('fetch-test').className = 'success';
+            })
+            .catch(error => {
+                document.getElementById('fetch-test').innerHTML = '❌ Fetch failed: ' + error;
+            });
+            
+        console.log('🧪 Simple test completed');
+    </script>
+</body>
+</html>

@@ -17,7 +17,8 @@ import {
   Globe,
   Share2,
   Palette,
-  Brush
+  Brush,
+  Sparkles
 } from 'lucide-react';
 
 const Layout: React.FC = () => {
@@ -36,8 +37,9 @@ const Layout: React.FC = () => {
     { name: 'Communications', href: '/app/communications', icon: MessageSquare },
     { name: 'Social Media', href: '/app/social-media', icon: Share2 },
     { name: 'Live Site', href: '/app/live-site', icon: Globe },
+    { name: 'AI Sites', href: '/app/sites', icon: Sparkles },
     { name: 'Brand Setup', href: '/app/brand-setup', icon: Brush },
-    { name: 'Templates', href: '/templates', icon: Palette }, // or another icon you prefer
+    { name: 'Templates', href: '/app/templates', icon: Palette }, // or another icon you prefer
     { name: 'Advanced Editor', href: '/app/advanced-editor', icon: Palette },
     { name: 'Settings', href: '/app/settings', icon: Settings },
   ];

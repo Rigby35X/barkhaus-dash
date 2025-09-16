@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barkhaus Embed Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .embed-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .demo-embed {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐾 Barkhaus Animal Embed Test</h1>
+        <p>This page demonstrates how the Barkhaus animal embed widget works on external websites.</p>
+    </div>
+
+    <div class="instructions">
+        <h2>📋 Quick Test (Working Example):</h2>
+        <p>Below is a live working example of the embed widget:</p>
+    </div>
+
+    <div class="demo-embed">
+        <h3>🎯 Live Demo Embed</h3>
+        <div id="demo-embed-container">
+            <!-- This will be populated with a working embed -->
+            <div style="text-align: center; padding: 40px; border: 2px dashed #ccc; color: #666;">
+                <p>🔄 Loading demo embed...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h2>📋 How to Generate Your Own Embed:</h2>
+        <ol>
+            <li><strong>Go to Dashboard:</strong>
+                <ul>
+                    <li>Visit: <a href="http://localhost:4173/app/sites" target="_blank">http://localhost:4173/app/sites</a></li>
+                    <li>Scroll down to "Animal Embed Widget"</li>
+                </ul>
+            </li>
+            <li><strong>Configure Settings:</strong>
+                <ul>
+                    <li>Set Base URL to: <code>http://localhost:4173</code></li>
+                    <li>Choose your preferred colors and filters</li>
+                    <li>Set token expiration (1-24 hours)</li>
+                </ul>
+            </li>
+            <li><strong>Generate & Test:</strong>
+                <ul>
+                    <li>Click "Generate Embed Code"</li>
+                    <li>Copy the HTML code</li>
+                    <li>Paste it into any website</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="embed-section">
+        <h2>🧪 Custom Embed Test Area</h2>
+        <p>Paste your generated embed code here to test it:</p>
+        
+        <textarea 
+            id="embed-input" 
+            placeholder="Paste your generated embed code here..."
+            style="width: 100%; height: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 12px;"
+        ></textarea>
+        
+        <button 
+            onclick="testEmbed()" 
+            style="margin-top: 10px; padding: 10px 20px; background: #007cba; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+            Test This Embed Code
+        </button>
+        
+        <div id="custom-embed-result" style="margin-top: 20px; min-height: 100px; border: 1px solid #ddd; border-radius: 4px; padding: 20px;">
+            <p style="text-align: center; color: #666;">Your embed will appear here after clicking "Test This Embed Code"</p>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h2>✅ What Should Happen:</h2>
+        <ul>
+            <li><strong>Loading State:</strong> Shows "Loading adoptable animals..." initially</li>
+            <li><strong>Auto-Resize:</strong> The iframe height adjusts to fit the content</li>
+            <li><strong>Responsive Design:</strong> Works on mobile and desktop</li>
+            <li><strong>Error Handling:</strong> Shows error message if something goes wrong</li>
+            <li><strong>Security:</strong> Uses secure iframe sandbox and CORS policies</li>
+        </ul>
+    </div>
+
+    <div class="instructions">
+        <h2>🚀 For Production Use:</h2>
+        <ol>
+            <li><strong>Deploy your Barkhaus dashboard</strong> to a production domain (e.g., Vercel, Netlify)</li>
+            <li><strong>Update the Base URL</strong> in the embed settings to your production domain</li>
+            <li><strong>Set environment variable:</strong> <code>VITE_PRODUCTION_URL=https://your-domain.com</code></li>
+            <li><strong>Generate new embed codes</strong> with the production URL</li>
+            <li><strong>Test on external websites</strong> to ensure CORS and security work correctly</li>
+        </ol>
+    </div>
+
+    <script>
+        // Function to test custom embed code
+        function testEmbed() {
+            const embedCode = document.getElementById('embed-input').value.trim();
+            const resultDiv = document.getElementById('custom-embed-result');
+            
+            if (!embedCode) {
+                resultDiv.innerHTML = '<p style="color: #d32f2f;">Please paste an embed code first.</p>';
+                return;
+            }
+            
+            // Clear previous content and insert new embed
+            resultDiv.innerHTML = embedCode;
+            
+            // Log success
+            console.log('✅ Custom embed code inserted');
+        }
+
+        // Create a demo embed automatically
+        function createDemoEmbed() {
+            // This creates a simple demo embed for testing
+            const demoContainer = document.getElementById('demo-embed-container');
+            
+            // Create a demo iframe directly
+            const iframe = document.createElement('iframe');
+            iframe.src = 'http://localhost:4173/embed/animals?token=demo&show_filters=1&primary=%23324b65';
+            iframe.style.width = '100%';
+            iframe.style.height = '600px';
+            iframe.style.border = '0';
+            iframe.style.borderRadius = '8px';
+            iframe.loading = 'lazy';
+            
+            // Replace the loading message
+            demoContainer.innerHTML = '';
+            demoContainer.appendChild(iframe);
+            
+            console.log('✅ Demo embed created');
+        }
+
+        // Simple script to highlight when embed loads
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.__barkhaus_embed_height) {
+                console.log('✅ Barkhaus embed loaded with height:', event.data.__barkhaus_embed_height);
+            }
+            if (event.data && event.data.__barkhaus_embed_error) {
+                console.error('❌ Barkhaus embed error:', event.data.__barkhaus_embed_error);
+            }
+        });
+
+        // Create demo embed when page loads
+        window.addEventListener('load', function() {
+            setTimeout(createDemoEmbed, 1000);
+        });
+    </script>
+</body>
+</html>

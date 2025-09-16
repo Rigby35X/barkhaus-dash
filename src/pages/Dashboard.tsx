@@ -1,241 +1,262 @@
-import React from 'react';
-import { Heart, Users, DollarSign, Calendar, TrendingUp, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { animalsAPI } from '../api/xano';
+import AnimalGrid from '../components/animals/AnimalGrid';
+import EmbedManager from '../components/admin/EmbedManager';
 
-const Dashboard: React.FC = () => {
-  const navigate = useNavigate();
+interface DashboardStats {
+  totalAnimals: number;
+  availableAnimals: number;
+  adoptedAnimals: number;
+  pendingAnimals: number;
+}
 
-  const stats = [
-    {
-      name: 'Total Pets',
-      value: '127',
-      change: '+12%',
-      changeType: 'increase',
-      icon: Heart,
-      color: 'text-primary-600',
-      href: '/app/pets'
-    },
-    {
-      name: 'Active Volunteers',
-      value: '48',
-      change: '+8%',
-      changeType: 'increase',
-      icon: Users,
-      color: 'text-success-600',
-      href: '/app/applications'
-    },
-    {
-      name: 'Monthly Donations',
-      value: '$12,450',
-      change: '+23%',
-      changeType: 'increase',
-      icon: DollarSign,
-      color: 'text-warning-600',
-      href: '/app/campaigns'
-    },
-    {
-      name: 'Adoptions This Month',
-      value: '18',
-      change: '+5%',
-      changeType: 'increase',
-      icon: Calendar,
-      color: 'text-secondary-600',
-      href: '/app/applications'
+export default function Dashboard() {
+  const { user } = useAuth();
+  const [animals, setAnimals] = useState([]);
+  const [stats, setStats] = useState<DashboardStats>({
+    totalAnimals: 0,
+    availableAnimals: 0,
+    adoptedAnimals: 0,
+    pendingAnimals: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchAnimals();
+  }, [user]);
+
+  const fetchAnimals = async () => {
+    if (!user?.organizationId) return;
+
+    try {
+      setLoading(true);
+      const data = await animalsAPI.getAll(user.organizationId);
+      setAnimals(data);
+
+      // Calculate stats
+      const totalAnimals = data.length;
+      const availableAnimals = data.filter((a: any) => a.status === 'Available').length;
+      const adoptedAnimals = data.filter((a: any) => a.status === 'Adopted').length;
+      const pendingAnimals = data.filter((a: any) => a.status === 'Pending').length;
+
+      setStats({
+        totalAnimals,
+        availableAnimals,
+        adoptedAnimals,
+        pendingAnimals
+      });
+    } catch (err) {
+      console.error('Error fetching animals:', err);
+      setError('Failed to load animals');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const recentActivities = [
-    {
-      id: 1,
-      type: 'adoption',
-      message: 'Bella (Golden Retriever) was adopted by the Johnson family',
-      time: '2 hours ago',
-      icon: Heart,
-      color: 'text-success-600',
-      href: '/app/pets'
-    },
-    {
-      id: 2,
-      type: 'donation',
-      message: 'New donation of $500 received from Sarah M.',
-      time: '4 hours ago',
-      icon: DollarSign,
-      color: 'text-warning-600',
-      href: '/app/campaigns'
-    },
-    {
-      id: 3,
-      type: 'volunteer',
-      message: 'Mike Chen signed up as a new volunteer',
-      time: '6 hours ago',
-      icon: Users,
-      color: 'text-primary-600',
-      href: '/app/applications'
-    },
-    {
-      id: 4,
-      type: 'medical',
-      message: 'Max (German Shepherd) completed vaccination schedule',
-      time: '1 day ago',
-      icon: AlertCircle,
-      color: 'text-secondary-600',
-      href: '/app/pets'
-    }
-  ];
-
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: 'Adoption Event at Central Park',
-      date: 'Tomorrow, 10:00 AM',
-      volunteers: 12,
-      href: '/app/campaigns'
-    },
-    {
-      id: 2,
-      title: 'Volunteer Training Session',
-      date: 'Friday, 2:00 PM',
-      volunteers: 8,
-      href: '/app/applications'
-    },
-    {
-      id: 3,
-      title: 'Fundraising Gala',
-      date: 'Next Saturday, 6:00 PM',
-      volunteers: 25,
-      href: '/app/campaigns'
-    }
-  ];
-
-  const quickActions = [
-    {
-      title: 'Add New Pet',
-      icon: Heart,
-      color: 'btn-primary',
-      href: '/app/pets'
-    },
-    {
-      title: 'Review Applications',
-      icon: Users,
-      color: 'btn-secondary',
-      href: '/app/applications'
-    },
-    {
-      title: 'Create Campaign',
-      icon: DollarSign,
-      color: 'btn-success',
-      href: '/app/campaigns'
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bebas uppercase text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome back! Here's what's happening at your rescue.</p>
+      <div className="bg-white shadow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                🐾 Dashboard
+              </h1>
+              <p className="text-gray-600">
+                Welcome back, {user?.name}!
+              </p>
+            </div>
+            <Link
+              to="/app/animals/new"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Add New Animal
+            </Link>
+          </div>
+        </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <div 
-              key={stat.name} 
-              className="stat-card cursor-pointer hover:shadow-lg transition-shadow duration-200"
-              onClick={() => navigate(stat.href)}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
-                  <div className="flex items-center mt-2">
-                    <TrendingUp className="h-4 w-4 text-success-600 mr-1" />
-                    <span className="text-sm font-medium text-success-600">{stat.change}</span>
-                    <span className="text-sm text-gray-500 ml-1">from last month</span>
-                  </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold">{stats.totalAnimals}</span>
                 </div>
-                <div className={`p-3 rounded-full bg-gray-50`}>
-                  <Icon className={`h-8 w-8 ${stat.color}`} />
-                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Total Animals</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.totalAnimals}</p>
               </div>
             </div>
-          );
-        })}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Activities */}
-        <div className="card">
-          <h2 className="text-xl font-bebas uppercase text-gray-900 mb-6">Recent Activities</h2>
-          <div className="space-y-4">
-            {recentActivities.map((activity) => {
-              const Icon = activity.icon;
-              return (
-                <div 
-                  key={activity.id} 
-                  className="flex items-start space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200"
-                  onClick={() => navigate(activity.href)}
-                >
-                  <div className={`p-2 rounded-full bg-gray-50`}>
-                    <Icon className={`h-4 w-4 ${activity.color}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900">{activity.message}</p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                  </div>
-                </div>
-              );
-            })}
           </div>
-        </div>
 
-        {/* Upcoming Events */}
-        <div className="card">
-          <h2 className="text-xl font-bebas uppercase text-gray-900 mb-6">Upcoming Events</h2>
-          <div className="space-y-4">
-            {upcomingEvents.map((event) => (
-              <div 
-                key={event.id} 
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200"
-                onClick={() => navigate(event.href)}
-              >
-                <div>
-                  <h3 className="font-medium text-gray-900">{event.title}</h3>
-                  <p className="text-sm text-gray-600">{event.date}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900">{event.volunteers}</p>
-                  <p className="text-xs text-gray-500">volunteers</p>
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-green-600 font-semibold">{stats.availableAnimals}</span>
                 </div>
               </div>
-            ))}
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Available</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.availableAnimals}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <span className="text-yellow-600 font-semibold">{stats.pendingAnimals}</span>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Pending</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.pendingAnimals}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-semibold">{stats.adoptedAnimals}</span>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Adopted</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.adoptedAnimals}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Quick Actions */}
-      <div className="card">
-        <h2 className="text-xl font-bebas uppercase text-gray-900 mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {quickActions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <button 
-                key={action.title}
-                onClick={() => navigate(action.href)}
-                className={`${action.color} flex items-center justify-center space-x-2`}
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow mb-8">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Link
+                to="/app/animals"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <Icon className="h-5 w-5" />
-                <span>{action.title}</span>
-              </button>
-            );
-          })}
+                <div className="flex-shrink-0">
+                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-900">Manage Animals</p>
+                  <p className="text-sm text-gray-500">View and edit all animals</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/app/animals/new"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex-shrink-0">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-900">Add Animal</p>
+                  <p className="text-sm text-gray-500">Add a new animal to your rescue</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/app/embed"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex-shrink-0">
+                  <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-900">Embed Widget</p>
+                  <p className="text-sm text-gray-500">Generate iframe for your website</p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Animals */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Animals</h2>
+            <Link
+              to="/app/animals"
+              className="text-blue-600 hover:text-blue-500 text-sm font-medium"
+            >
+              View All
+            </Link>
+          </div>
+          <div className="p-6">
+            {error ? (
+              <div className="text-center py-8">
+                <p className="text-red-600">{error}</p>
+                <button
+                  onClick={fetchAnimals}
+                  className="mt-2 text-blue-600 hover:text-blue-500"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : (
+              <AnimalGrid
+                animals={animals.slice(0, 6)} // Show only first 6
+                orgId={user?.organizationId || ''}
+                showEditButtons={true}
+                onEdit={(animal) => {
+                  // Navigate to edit page
+                  window.location.href = `/app/animals/${animal.id}/edit`;
+                }}
+                onDelete={async (animalId) => {
+                  if (confirm('Are you sure you want to delete this animal?')) {
+                    try {
+                      await animalsAPI.delete(animalId, user?.organizationId || '');
+                      fetchAnimals(); // Refresh the list
+                    } catch (err) {
+                      alert('Failed to delete animal');
+                    }
+                  }
+                }}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Embed Widget Section */}
+        <div className="mt-8">
+          <EmbedManager />
         </div>
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

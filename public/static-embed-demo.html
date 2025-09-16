@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Embed Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .xa-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        .xa-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); transition: all 0.2s ease-in-out; }
+        .xa-card:hover { box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.1); transform: translateY(-2px); }
+        .xa-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+        .xa-body { padding: 1rem; }
+        .xa-name { font-size: 1.125rem; font-weight: 700; color: #1f2937; margin: 0 0 0.5rem 0; }
+        .xa-meta { color: #6b7280; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <h1>🐾 Static Embed Demo</h1>
+    <p>This is a completely static version of what the embed should look like:</p>
+    
+    <div class="xa-grid">
+        <article class="xa-card">
+            <img class="xa-img" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=300&fit=crop&crop=faces" alt="Bella" />
+            <div class="xa-body">
+                <h3 class="xa-name">Bella</h3>
+                <div class="xa-meta">Dog • Golden Retriever • 3 years • Available</div>
+            </div>
+        </article>
+        
+        <article class="xa-card">
+            <img class="xa-img" src="https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=400&h=300&fit=crop&crop=faces" alt="Max" />
+            <div class="xa-body">
+                <h3 class="xa-name">Max</h3>
+                <div class="xa-meta">Dog • German Shepherd • 5 years • Available</div>
+            </div>
+        </article>
+        
+        <article class="xa-card">
+            <img class="xa-img" src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=300&fit=crop&crop=faces" alt="Luna" />
+            <div class="xa-body">
+                <h3 class="xa-name">Luna</h3>
+                <div class="xa-meta">Cat • Siamese • 2 years • Available</div>
+            </div>
+        </article>
+    </div>
+    
+    <p style="margin-top: 40px; padding: 20px; background: #f0f9ff; border-radius: 8px;">
+        <strong>This is what you should see in the embed!</strong><br>
+        If the React embed isn't working, compare what you see there with this static version.
+    </p>
+</body>
+</html>

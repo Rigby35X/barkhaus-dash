@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sections",
+  "info": {
+    "singularName": "section",
+    "pluralName": "sections",
+    "displayName": "Section",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "header",
+        "hero",
+        "about",
+        "services",
+        "gallery",
+        "footer",
+        "custom"
+      ]
+    },
+    "content": {
+      "type": "json",
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 10
+    },
+    "isVisible": {
+      "type": "boolean",
+      "default": true
+    },
+    "template": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::template.template",
+      "inversedBy": "sections"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "@barkhaus/ui",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.js"
+    },
+    "./sections": {
+      "types": "./dist/sections/index.d.ts",
+      "import": "./dist/sections/index.js"
+    },
+    "./PageRenderer": {
+      "types": "./dist/PageRenderer.d.ts",
+      "import": "./dist/PageRenderer.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@barkhaus/schemas": "workspace:*",
+    "react": "^18.2.0",
+    "lucide-react": "^0.303.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/react": "^18.2.45",
+    "@types/node": "^20.10.5"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { TenantProvider } from './contexts/TenantContext';
+import { MultitenancyProvider } from './contexts/MultitenancyContext';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -20,29 +21,64 @@ import AdvancedEditor from './pages/AdvancedEditor';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-import TemplatesPage from './pages/templates';
+import TemplatesPage from './pages/TemplatesPage';
 import TemplatesDashboard from './pages/TemplatesDashboard';
-import TemplatePreview from './pages/TemplatePreview';
+import TemplatePreview from './pages/TemplatePreviewNew';
+import TemplatePreviewAnimalRescue from './pages/TemplatePreviewAnimalRescue';
 import EditorPage from './pages/EditorPage';
 import BrandSetup from './pages/BrandSetup';
+import Sites from './pages/Sites';
+import PublicSiteRouter from './components/PublicSiteRouter';
+import EmbedAnimalsPage from './pages/EmbedAnimalsPage';
+import EmbedAnimalDetailPage from './pages/EmbedAnimalDetailPage';
+import SignInForm from './components/auth/SignInForm';
+import SignUpForm from './components/auth/SignUpForm';
+import AnimalsPage from './pages/AnimalsPage';
+import AnimalForm from './components/animals/AnimalForm';
 
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <TenantProvider>
-          <Routes>
+        <MultitenancyProvider>
+          <TenantProvider>
+            <Routes>
             {/* 👇 Home */}
             <Route path="/" element={<LandingPage />} />
 
             {/* 👇 Template Library + Preview */}
             <Route path="/templates" element={<TemplatesDashboard />} />
             <Route path="/preview" element={<TemplatePreview />} />
+            <Route path="/template-preview/animal-rescue" element={<TemplatePreviewAnimalRescue />} />
+
+            {/* 👇 Authentication Routes */}
+            <Route path="/auth/signin" element={<SignInForm />} />
+            <Route path="/auth/signup" element={<SignUpForm />} />
+
+            {/* 👇 Admin Routes */}
+            <Route path="/app/dashboard" element={<Dashboard />} />
+            <Route path="/app/animals" element={<AnimalsPage />} />
+            <Route path="/app/animals/new" element={
+              <AnimalForm
+                onSubmit={async (animal) => {
+                  // Handle animal creation
+                  console.log('Creating animal:', animal);
+                }}
+                onCancel={() => window.history.back()}
+              />
+            } />
+
+            {/* 👇 Embed Routes (for iframes) */}
+            <Route path="/embed/animals" element={<EmbedAnimalsPage />} />
+            <Route path="/embed/animals/:id" element={<EmbedAnimalDetailPage />} />
 
             {/* 👇 Auth Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+
+            {/* 👇 Public Site Routes */}
+            <Route path="/:slug/*" element={<PublicSiteRouter />} />
 
             {/* 👇 Protected App Dashboard */}
             <Route
@@ -66,9 +102,11 @@ function App() {
               <Route path="brand-setup" element={<BrandSetup />} />
               <Route path="settings" element={<Settings />} />
               <Route path="templates" element={<TemplatesPage />} />
+              <Route path="sites" element={<Sites />} />
             </Route>
           </Routes>
-        </TenantProvider>
+          </TenantProvider>
+        </MultitenancyProvider>
       </AuthProvider>
     </Router>
   );

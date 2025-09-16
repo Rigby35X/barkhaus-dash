@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Search, Filter, Archive, Trash2, Reply, Star, Clock, User, MessageSquare, X, Send } from 'lucide-react';
+import { getInboxMessages } from '../api/xano';
+import { useTenant } from '../contexts/TenantContext';
 
 interface InboxMessage {
   id: string;
@@ -7,7 +9,7 @@ interface InboxMessage {
   email: string;
   subject: string;
   message: string;
-  type: 'contact' | 'success_story' | 'general';
+  type: 'contact' | 'success_story' | 'general' | 'adoption' | 'volunteer' | 'foster';
   status: 'unread' | 'read' | 'archived';
   priority: 'low' | 'normal' | 'high';
   receivedDate: string;
@@ -17,6 +19,7 @@ interface InboxMessage {
 }
 
 const Inbox: React.FC = () => {
+  const { organization } = useTenant()
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -24,8 +27,47 @@ const Inbox: React.FC = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyContent, setReplyContent] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState<InboxMessage[]>([
+  const tenantId = organization?.id ? parseInt(organization.id) : 1;
+
+  const loadMessages = async () => {
+    try {
+      setLoading(true)
+      const result = await getInboxMessages(tenantId)
+
+      if (result.success && result.data) {
+        // Transform Xano data to match our interface
+        const transformedMessages = result.data.map((msg: any) => ({
+          id: msg.id.toString(),
+          from: msg.name || msg.applicantName || 'Unknown',
+          email: msg.email,
+          subject: msg.subject || `${msg.form_type} inquiry`,
+          message: msg.message || msg.whyAdopt || 'No message content',
+          type: msg.form_type,
+          status: msg.status === 'new' ? 'unread' : 'read',
+          priority: 'normal',
+          receivedDate: msg.submitted_at,
+          petName: msg.specificAnimal
+        }))
+        setMessages(transformedMessages)
+      } else {
+        // Keep existing mock data and add form submission examples
+        setMessages(mockMessages)
+      }
+    } catch (error) {
+      console.error('Error loading messages:', error)
+      setMessages(mockMessages)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadMessages()
+  }, [tenantId])
+
+  const mockMessages: InboxMessage[] = [
     {
       id: '1',
       from: 'John Smith',
@@ -37,6 +79,40 @@ const Inbox: React.FC = () => {
       priority: 'normal',
       receivedDate: '2024-01-29T10:30:00Z',
       petName: 'Bella'
+    },
+    {
+      id: '4',
+      from: 'Sarah Johnson',
+      email: 'sarah@email.com',
+      subject: 'Adoption Application - Buddy',
+      message: 'I would love to adopt Buddy. I have a fenced yard and experience with Golden Retrievers. I work from home so I can provide lots of attention.',
+      type: 'adoption',
+      status: 'unread',
+      priority: 'high',
+      receivedDate: '2024-01-29T09:15:00Z',
+      petName: 'Buddy'
+    },
+    {
+      id: '5',
+      from: 'Mike Chen',
+      email: 'mike@email.com',
+      subject: 'Volunteer Application',
+      message: 'I\'d like to volunteer on weekends. I have experience with dogs and can help with walking, feeding, and basic care.',
+      type: 'volunteer',
+      status: 'unread',
+      priority: 'normal',
+      receivedDate: '2024-01-29T08:30:00Z'
+    },
+    {
+      id: '6',
+      from: 'Emily Rodriguez',
+      email: 'emily@email.com',
+      subject: 'Foster Application',
+      message: 'I\'m interested in fostering puppies. I have a quiet home environment and previous fostering experience.',
+      type: 'foster',
+      status: 'read',
+      priority: 'normal',
+      receivedDate: '2024-01-28T16:45:00Z'
     },
     {
       id: '2',
@@ -84,7 +160,7 @@ const Inbox: React.FC = () => {
       priority: 'low',
       receivedDate: '2024-01-25T11:10:00Z'
     }
-  ]);
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -242,6 +318,9 @@ const Inbox: React.FC = () => {
             >
               <option value="all">All Types</option>
               <option value="contact">Contact</option>
+              <option value="adoption">Adoption Applications</option>
+              <option value="volunteer">Volunteer Applications</option>
+              <option value="foster">Foster Applications</option>
               <option value="success_story">Success Stories</option>
               <option value="general">General</option>
             </select>

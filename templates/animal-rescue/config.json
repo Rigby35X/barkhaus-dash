@@ -1,0 +1,140 @@
+{
+  "name": "Animal Rescue Template",
+  "id": "animal-rescue",
+  "version": "1.0.0",
+  "description": "A beautiful, modern template designed specifically for animal rescue organizations",
+  "category": "nonprofit",
+  "tags": ["animals", "rescue", "adoption", "nonprofit", "pets"],
+  "author": "Barkhaus Team",
+  "license": "MIT",
+  
+  "preview": {
+    "thumbnail": "./preview.png",
+    "demo_url": "https://demo.barkhaus.com/animal-rescue",
+    "screenshots": [
+      "./screenshots/home.png",
+      "./screenshots/animals.png",
+      "./screenshots/about.png"
+    ]
+  },
+
+  "features": [
+    "Responsive design",
+    "Animal gallery with filtering",
+    "Adoption application forms",
+    "Donation integration",
+    "Event calendar",
+    "Volunteer signup",
+    "Success stories",
+    "Contact forms"
+  ],
+
+  "customization": {
+    "colors": {
+      "primary": "#3B82F6",
+      "secondary": "#1E40AF",
+      "accent": "#F59E0B"
+    },
+    "fonts": {
+      "heading": "Inter",
+      "body": "Inter"
+    },
+    "layout": {
+      "header_style": "modern",
+      "footer_style": "comprehensive"
+    }
+  },
+
+  "pages": [
+    {
+      "name": "Home",
+      "path": "/",
+      "component": "HomePage",
+      "file": "pages/HomePage.jsx",
+      "sections": ["navbar", "header", "layout", "cta", "testimonials", "footer"]
+    },
+    {
+      "name": "About Us",
+      "path": "/about",
+      "component": "AboutPage",
+      "file": "pages/AboutPage.jsx",
+      "sections": ["navbar", "header", "team", "timeline", "footer"]
+    },
+    {
+      "name": "Available Animals",
+      "path": "/animals",
+      "component": "AnimalsPage",
+      "file": "pages/AnimalsPage.jsx",
+      "sections": ["navbar", "header", "portfolio", "footer"]
+    },
+    {
+      "name": "Animal Detail",
+      "path": "/animals/:id",
+      "component": "AnimalDetailPage",
+      "file": "pages/AnimalDetailPage.jsx",
+      "sections": ["navbar", "product-header", "content", "footer"]
+    },
+    {
+      "name": "Adoption Process",
+      "path": "/adoption-process",
+      "component": "AdoptionProcessPage",
+      "file": "pages/AdoptionProcessPage.jsx",
+      "sections": ["navbar", "header", "layout", "faq", "footer"]
+    },
+    {
+      "name": "Donate",
+      "path": "/donate",
+      "component": "DonatePage",
+      "file": "pages/DonatePage.jsx",
+      "sections": ["navbar", "header", "pricing", "testimonials", "footer"]
+    },
+    {
+      "name": "Contact",
+      "path": "/contact",
+      "component": "ContactPage",
+      "file": "pages/ContactPage.jsx",
+      "sections": ["navbar", "header", "contact-form", "footer"]
+    }
+  ],
+
+  "components": [
+    "Navbar1",
+    "Header15", "Header46", "Header47", "Header49", "Header54", "Header62",
+    "Layout4", "Layout12", "Layout22", "Layout24", "Layout90", "Layout117", "Layout192", "Layout238", "Layout240", "Layout241",
+    "Contact1", "Contact3", "Contact13", "Contact16", "Contact19",
+    "Cta1", "Cta4", "Cta7", "Cta25", "Cta39",
+    "Faq1", "Faq2", "Faq8",
+    "Footer1",
+    "Logo2",
+    "Portfolio13",
+    "Pricing14",
+    "ProductHeader4",
+    "Team2", "Team8",
+    "Testimonial1", "Testimonial4", "Testimonial6",
+    "Timeline13",
+    "Content1"
+  ],
+
+  "dependencies": {
+    "required": [
+      "react",
+      "react-dom",
+      "tailwindcss",
+      "lucide-react"
+    ],
+    "optional": [
+      "framer-motion",
+      "@headlessui/react"
+    ]
+  },
+
+  "installation": {
+    "steps": [
+      "Copy template files to your project",
+      "Install dependencies",
+      "Configure API endpoints",
+      "Customize branding",
+      "Deploy"
+    ]
+  }
+}

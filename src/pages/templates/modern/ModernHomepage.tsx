@@ -10,6 +10,7 @@ import Footer from './sections/Footer';
 const ModernHomepage = () => {
   return (
     <>
+      <Header />
       <Hero />
       <About />
       <Services />

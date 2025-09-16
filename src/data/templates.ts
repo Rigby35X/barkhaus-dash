@@ -1,25 +1,25 @@
 // src/data/templates.ts
 export const templates = [
   {
-    id: 'barkhaus-classic',
+    id: 'classic',
     name: 'Barkhaus Classic',
     image: '/template-thumbnails/barkhaus-classic.jpg',
     description: 'A modern, clean layout ideal for all rescues.',
-    previewUrl: '/preview?template=barkhaus-classic'
+    previewUrl: '/preview?template=classic&org=happy-paws'
   },
   {
-    id: 'project-bolt',
+    id: 'bold',
     name: 'Project Bolt',
     image: '/template-thumbnails/project-bolt.jpg',
     description: 'Sleek and bold—great for standout branding.',
-    previewUrl: '/preview?template=project-bolt'
+    previewUrl: '/preview?template=classic&org=happy-paws'
   },
   {
     id: 'modern',
     name: 'Modern Rescue',
     image: '/template-thumbnails/modern.jpg',
     description: 'A contemporary design with gradient backgrounds and modern typography.',
-    previewUrl: '/preview?template=modern'
+    previewUrl: '/preview?template=modern&org=happy-paws'
   }
   // You can add more
 ];

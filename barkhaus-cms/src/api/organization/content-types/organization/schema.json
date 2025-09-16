@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "organizations",
+  "info": {
+    "singularName": "organization",
+    "pluralName": "organizations",
+    "displayName": "Organization",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "primaryColor": {
+      "type": "string",
+      "default": "#3B82F6"
+    },
+    "secondaryColor": {
+      "type": "string",
+      "default": "#8B5CF6"
+    },
+    "accentColor": {
+      "type": "string",
+      "default": "#10B981"
+    },
+    "headingFont": {
+      "type": "string",
+      "default": "Inter"
+    },
+    "bodyFont": {
+      "type": "string",
+      "default": "Inter"
+    },
+    "mission": {
+      "type": "text",
+      "required": true
+    },
+    "about": {
+      "type": "text",
+      "required": true
+    },
+    "contactInfo": {
+      "type": "json"
+    },
+    "socialMedia": {
+      "type": "json"
+    }
+  }
+}

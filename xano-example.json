@@ -1,0 +1,215 @@
+{
+  "description": "Example Xano API responses for testing and development",
+  "branding": {
+    "primary_color": "#2563eb",
+    "secondary_color": "#7c3aed",
+    "primary_light": "#3b82f6",
+    "secondary_light": "#8b5cf6",
+    "company_name": "Acme Corporation",
+    "tagline": "Innovation at its finest",
+    "logo_url": "https://example.com/logo.png",
+    "favicon_url": "https://example.com/favicon.ico",
+    "apple_touch_icon_url": "https://example.com/apple-touch-icon.png",
+    "manifest_icon_url": "https://example.com/manifest-icon.png",
+    "dark_primary_color": "#1d4ed8",
+    "dark_secondary_color": "#6d28d9",
+    "dark_background_color": "#1f2937"
+  },
+  "content": {
+    "hero": {
+      "title": "Transform Your Business with Acme",
+      "subtitle": "Welcome to the Future",
+      "description": "We provide cutting-edge solutions that drive growth and innovation for businesses of all sizes. Join thousands of satisfied customers who trust Acme.",
+      "cta_text": "Start Your Journey",
+      "cta_link": "/get-started/",
+      "background_image": "https://example.com/hero-background.jpg"
+    },
+    "services": [
+      {
+        "title": "Digital Transformation",
+        "description": "Modernize your business processes with our comprehensive digital transformation services.",
+        "icon": "https://example.com/icons/digital-transform.svg"
+      },
+      {
+        "title": "Cloud Solutions",
+        "description": "Scalable cloud infrastructure and services to power your business growth.",
+        "icon": "https://example.com/icons/cloud.svg"
+      },
+      {
+        "title": "Data Analytics",
+        "description": "Turn your data into actionable insights with our advanced analytics platform.",
+        "icon": "https://example.com/icons/analytics.svg"
+      },
+      {
+        "title": "Cybersecurity",
+        "description": "Protect your business with enterprise-grade security solutions.",
+        "icon": "https://example.com/icons/security.svg"
+      }
+    ],
+    "about": {
+      "title": "About Acme Corporation",
+      "subtitle": "Our Story",
+      "description": "Founded in 2010, Acme Corporation has been at the forefront of technological innovation. We believe in creating solutions that not only meet today's challenges but anticipate tomorrow's opportunities.",
+      "quote": "Innovation distinguishes between a leader and a follower.",
+      "author_name": "John Smith",
+      "author_title": "CEO & Founder",
+      "images": [
+        "https://example.com/about/team.jpg",
+        "https://example.com/about/office.jpg"
+      ]
+    },
+    "portfolio": {
+      "title": "Our Success Stories",
+      "subtitle": "Portfolio",
+      "items": [
+        {
+          "title": "E-commerce Platform",
+          "description": "Complete digital transformation for a major retailer",
+          "image": "https://example.com/portfolio/ecommerce.jpg",
+          "category": "Digital Transformation"
+        },
+        {
+          "title": "Healthcare Analytics",
+          "description": "Data analytics solution for healthcare provider",
+          "image": "https://example.com/portfolio/healthcare.jpg",
+          "category": "Data Analytics"
+        },
+        {
+          "title": "Financial Security",
+          "description": "Cybersecurity implementation for financial institution",
+          "image": "https://example.com/portfolio/finance.jpg",
+          "category": "Cybersecurity"
+        }
+      ]
+    }
+  },
+  "tables": {
+    "dogs": {
+      "rows": [
+        {
+          "id": 1,
+          "name": "Buddy",
+          "breed": "Golden Retriever",
+          "age": "3 years",
+          "weight": "65 lbs",
+          "description": "Friendly and energetic dog who loves to play fetch and swim.",
+          "image_url": "https://example.com/dogs/buddy.jpg",
+          "status": "Available",
+          "created_at": "2024-01-15T10:30:00Z"
+        },
+        {
+          "id": 2,
+          "name": "Luna",
+          "breed": "Border Collie",
+          "age": "2 years",
+          "weight": "45 lbs",
+          "description": "Intelligent and loyal companion with beautiful blue eyes.",
+          "image_url": "https://example.com/dogs/luna.jpg",
+          "status": "Available",
+          "created_at": "2024-01-20T14:15:00Z"
+        },
+        {
+          "id": 3,
+          "name": "Max",
+          "breed": "German Shepherd",
+          "age": "4 years",
+          "weight": "75 lbs",
+          "description": "Protective and well-trained dog, great with families.",
+          "image_url": "https://example.com/dogs/max.jpg",
+          "status": "Adopted",
+          "created_at": "2024-01-10T09:45:00Z"
+        }
+      ]
+    },
+    "testimonials": {
+      "rows": [
+        {
+          "id": 1,
+          "name": "Sarah Johnson",
+          "company": "Tech Innovations Inc.",
+          "position": "CTO",
+          "testimonial": "Acme's solutions transformed our entire operation. The results exceeded our expectations.",
+          "rating": 5,
+          "image": "https://example.com/testimonials/sarah.jpg"
+        },
+        {
+          "id": 2,
+          "name": "Michael Chen",
+          "company": "Global Enterprises",
+          "position": "CEO",
+          "testimonial": "Outstanding service and support. Acme truly understands business needs.",
+          "rating": 5,
+          "image": "https://example.com/testimonials/michael.jpg"
+        }
+      ]
+    },
+    "team": {
+      "rows": [
+        {
+          "id": 1,
+          "name": "John Smith",
+          "position": "CEO & Founder",
+          "bio": "Visionary leader with 20+ years in technology",
+          "image": "https://example.com/team/john.jpg",
+          "linkedin": "https://linkedin.com/in/johnsmith"
+        },
+        {
+          "id": 2,
+          "name": "Jane Doe",
+          "position": "CTO",
+          "bio": "Technical expert specializing in cloud architecture",
+          "image": "https://example.com/team/jane.jpg",
+          "linkedin": "https://linkedin.com/in/janedoe"
+        }
+      ]
+    },
+    "products": {
+      "rows": [
+        {
+          "id": 1,
+          "name": "Acme Cloud Platform",
+          "description": "Comprehensive cloud infrastructure solution",
+          "price": "$99/month",
+          "features": ["Scalable Infrastructure", "24/7 Support", "Advanced Security"],
+          "image": "https://example.com/products/cloud-platform.jpg"
+        },
+        {
+          "id": 2,
+          "name": "Acme Analytics Suite",
+          "description": "Advanced data analytics and reporting tools",
+          "price": "$149/month",
+          "features": ["Real-time Analytics", "Custom Dashboards", "API Integration"],
+          "image": "https://example.com/products/analytics-suite.jpg"
+        }
+      ]
+    }
+  },
+  "settings": {
+    "site_title": "Acme Corporation - Innovation at its Finest",
+    "meta_description": "Leading provider of digital transformation, cloud solutions, and data analytics services.",
+    "contact_email": "hello@acmecorp.com",
+    "contact_phone": "+1 (555) 123-4567",
+    "address": {
+      "street": "123 Innovation Drive",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94105",
+      "country": "USA"
+    },
+    "social_media": {
+      "facebook": "https://facebook.com/acmecorp",
+      "twitter": "https://twitter.com/acmecorp",
+      "linkedin": "https://linkedin.com/company/acmecorp",
+      "instagram": "https://instagram.com/acmecorp"
+    },
+    "business_hours": {
+      "monday": "9:00 AM - 6:00 PM",
+      "tuesday": "9:00 AM - 6:00 PM",
+      "wednesday": "9:00 AM - 6:00 PM",
+      "thursday": "9:00 AM - 6:00 PM",
+      "friday": "9:00 AM - 6:00 PM",
+      "saturday": "Closed",
+      "sunday": "Closed"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
+import { fetchOrganizations, fetchOrganizationById } from '../api/xano';
 
 interface Organization {
   id: string;
@@ -43,21 +44,54 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [currentTenant, setCurrentTenant] = useState<Tenant | null>(null);
 
   useEffect(() => {
-    if (user) {
-      // Mock organization data
-      const mockOrg: Organization = {
-        id: user.organizationId,
-        name: 'Happy Paws Rescue',
-        address: '123 Main St, Anytown, ST 12345',
-        phone: '(555) 123-4567',
-        email: 'info@happypawsrescue.org',
-        website: 'https://happypawsrescue.org',
-        taxId: '12-3456789'
-      };
-      setOrganization(mockOrg);
-    } else {
-      setOrganization(null);
+    const loadOrganization = async () => {
+      if (user?.organizationId) {
+        console.log('🏢 Loading organization from API:', user.organizationId)
+
+        try {
+          const result = await fetchOrganizationById(user.organizationId)
+
+          if (result.success && result.data) {
+            console.log('✅ Organization loaded from API:', result.data)
+
+            // Map API response to our Organization interface
+            const apiOrg = result.data
+            const organization: Organization = {
+              id: apiOrg.id || user.organizationId,
+              name: apiOrg.organization_name || apiOrg.name || 'My Organization',
+              address: apiOrg.address || '',
+              phone: apiOrg.phone || '',
+              email: apiOrg.email || '',
+              website: apiOrg.website || '',
+              taxId: apiOrg.tax_id || ''
+            }
+
+            setOrganization(organization)
+          } else {
+            console.log('⚠️ API failed, using fallback organization data')
+            throw new Error('API failed')
+          }
+        } catch (error) {
+          console.log('❌ Failed to load organization from API, using mock data:', error)
+
+          // Fallback to mock data with correct ID starting from 3
+          const mockOrg: Organization = {
+            id: user.organizationId.startsWith('1') ? '3' : user.organizationId,
+            name: 'Happy Paws Rescue',
+            address: '123 Main St, Anytown, ST 12345',
+            phone: '(555) 123-4567',
+            email: 'info@happypawsrescue.org',
+            website: 'https://happypawsrescue.org',
+            taxId: '12-3456789'
+          }
+          setOrganization(mockOrg)
+        }
+      } else {
+        setOrganization(null)
+      }
     }
+
+    loadOrganization()
   }, [user]);
 
   const updateOrganization = (updates: Partial<Organization>) => {

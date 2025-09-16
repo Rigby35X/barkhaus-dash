@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "strict": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "templates/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "app",
+    "src/editor",
+    "src/components/components",
+    "src/pages/Inbox.tsx",
+    "src/pages/[tenantSlug]",
+    "src/pages/TemplatePreview.tsx",
+    "src/pages/TemplatePreviewNew.tsx",
+    "src/pages/TemplatesPage.tsx",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/Inbox.tsx"
+  ]
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Embed Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+        }
+        .success { color: green; }
+        .error { color: red; }
+        iframe { 
+            width: 100%; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Simple Embed Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Basic HTML</h2>
+        <p id="html-test" class="error">❌ HTML not working</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: JavaScript</h2>
+        <p id="js-test" class="error">❌ JavaScript not working</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Direct Embed URL</h2>
+        <p>Testing: <code>http://localhost:4173/embed/animals?token=demo</code></p>
+        <iframe 
+            id="embed-iframe"
+            src="http://localhost:4173/embed/animals?token=demo"
+            height="400"
+            style="min-height: 400px;"
+        ></iframe>
+        <p id="iframe-test" class="error">❌ Iframe not loaded</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 4: Console Messages</h2>
+        <p>Check browser console (F12) for debug messages:</p>
+        <ul>
+            <li>🚀 App starting...</li>
+            <li>🧪 Demo mode messages</li>
+            <li>✅ Success messages</li>
+            <li>❌ Any error messages</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 5: Network Requests</h2>
+        <p>Check Network tab (F12 → Network) for:</p>
+        <ul>
+            <li>embed/animals request - should be 200 OK</li>
+            <li>Any failed requests (red status codes)</li>
+        </ul>
+        <button onclick="testFetch()">Test Fetch</button>
+        <p id="fetch-test" class="error">❌ Fetch not tested</p>
+    </div>
+
+    <script>
+        console.log('🧪 Simple test page loaded');
+
+        // Test 1: Basic HTML
+        document.getElementById('html-test').innerHTML = '✅ HTML working';
+        document.getElementById('html-test').className = 'success';
+
+        // Test 2: JavaScript
+        document.getElementById('js-test').innerHTML = '✅ JavaScript working';
+        document.getElementById('js-test').className = 'success';
+
+        // Test 3: Iframe loading
+        const iframe = document.getElementById('embed-iframe');
+        iframe.onload = function() {
+            console.log('✅ Iframe loaded successfully');
+            document.getElementById('iframe-test').innerHTML = '✅ Iframe loaded';
+            document.getElementById('iframe-test').className = 'success';
+        };
+
+        iframe.onerror = function() {
+            console.error('❌ Iframe failed to load');
+            document.getElementById('iframe-test').innerHTML = '❌ Iframe failed to load';
+        };
+
+        // Test 4: Listen for messages from iframe
+        window.addEventListener('message', function(event) {
+            console.log('📨 Message received:', event.data);
+            if (event.data && event.data.__barkhaus_embed_height) {
+                console.log('✅ Auto-resize message received:', event.data.__barkhaus_embed_height);
+                iframe.style.height = event.data.__barkhaus_embed_height + 'px';
+            }
+        });
+
+        // Test 5: Fetch test
+        function testFetch() {
+            console.log('🧪 Testing fetch...');
+            fetch('http://localhost:4173/embed/animals?token=demo')
+                .then(response => {
+                    console.log('✅ Fetch response:', response.status, response.statusText);
+                    if (response.ok) {
+                        document.getElementById('fetch-test').innerHTML = '✅ Fetch working (' + response.status + ')';
+                        document.getElementById('fetch-test').className = 'success';
+                    } else {
+                        document.getElementById('fetch-test').innerHTML = '❌ Fetch failed (' + response.status + ')';
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Fetch error:', error);
+                    document.getElementById('fetch-test').innerHTML = '❌ Fetch error: ' + error.message;
+                });
+        }
+
+        // Auto-test fetch after 2 seconds
+        setTimeout(testFetch, 2000);
+    </script>
+</body>
+</html>

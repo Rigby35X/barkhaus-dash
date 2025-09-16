@@ -257,18 +257,42 @@ export default function BrandSetupWizard() {
   const handleSave = async () => {
     setLoading(true);
     try {
-      await Promise.all([
-        designSettings.id 
-          ? xanoAPI.updateDesignSettings(designSettings.id, designSettings)
-          : xanoAPI.createDesignSettings(designSettings),
-        xanoAPI.updateSiteContent(siteContent),
-        xanoAPI.updateServices(services)
-      ]);
-      
-      alert('Settings saved successfully!');
+      const savePromises = [];
+
+      // Only save if we have data
+      if (Object.keys(designSettings).length > 0) {
+        savePromises.push(
+          designSettings.id
+            ? xanoAPI.updateDesignSettings(designSettings.id, designSettings)
+            : xanoAPI.createDesignSettings(designSettings)
+        );
+      }
+
+      if (Object.keys(siteContent).length > 0) {
+        savePromises.push(xanoAPI.updateSiteContent(siteContent));
+      }
+
+      if (services.length > 0) {
+        savePromises.push(xanoAPI.updateServices(services));
+      }
+
+      if (savePromises.length > 0) {
+        await Promise.all(savePromises);
+        alert('Settings saved successfully!');
+      } else {
+        alert('No changes to save.');
+      }
     } catch (error) {
       console.error('Error saving:', error);
-      alert('Error saving settings. Please try again.');
+
+      // More specific error messages
+      if (error.message.includes('Network error') || error.message.includes('CORS')) {
+        alert('Network error: Please check your connection. If you\'re on localhost, make sure the development server is running with proxy enabled.');
+      } else if (error.message.includes('timeout')) {
+        alert('Request timeout: Please try again.');
+      } else {
+        alert(`Error saving settings: ${error.message || 'Please try again.'}`);
+      }
     } finally {
       setLoading(false);
     }

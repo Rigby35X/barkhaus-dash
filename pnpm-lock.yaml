@@ -74,6 +74,9 @@ importers:
       dotenv:
         specifier: ^17.2.1
         version: 17.2.1
+      grapesjs:
+        specifier: ^0.22.13
+        version: 0.22.13
       grapesjs-plugin-export:
         specifier: ^1.0.12
         version: 1.0.12
@@ -2066,8 +2069,8 @@ packages:
   grapesjs-preset-webpage@1.0.3:
     resolution: {integrity: sha512-C0VOKLAdhv0j1f81c6F2uk3JpJvxgXl5DeHUtDa5qGf/HZzaCmQxsvd8Re3Oh5Cah4uUCqoi9uB5FYx3hLND2w==}
 
-  grapesjs@0.22.12:
-    resolution: {integrity: sha512-1zhUKoKZCDyN0j/Z19/lJ25UBR4GUHtyeRMHgewskRiQSdb/du+9L/R/q/sijmp1cKPxQZihzvwoc69Ya/pXIQ==}
+  grapesjs@0.22.13:
+    resolution: {integrity: sha512-GsLqv9ckVF7cWgp6aqlmxmLUJSsGvni4FHsKm9nxa6rv3acUeTkdR93GbbYaTejn5nFFCn9mBwzGGmGh9X+xHA==}
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
@@ -3175,18 +3178,18 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
-  '@grapesjs/react@2.0.0(grapesjs@0.22.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@grapesjs/react@2.0.0(grapesjs@0.22.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@types/react': 19.1.10
       '@types/react-dom': 19.1.7(@types/react@19.1.10)
-      grapesjs: 0.22.12
+      grapesjs: 0.22.13
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
   '@grapesjs/studio-sdk@1.0.56(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@grapesjs/react': 2.0.0(grapesjs@0.22.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      grapesjs: 0.22.12
+      '@grapesjs/react': 2.0.0(grapesjs@0.22.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      grapesjs: 0.22.13
     transitivePeerDependencies:
       - react
       - react-dom
@@ -4887,7 +4890,7 @@ snapshots:
 
   grapesjs-preset-webpage@1.0.3: {}
 
-  grapesjs@0.22.12:
+  grapesjs@0.22.13:
     dependencies:
       '@types/backbone': 1.4.15
       backbone: 1.4.1

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MessageSquare, Plus, Send, Search, Filter, Mail, Users, Calendar, Edit, Eye, Save, X } from 'lucide-react';
+import { MessageSquare, Plus, Send, Search, Filter, Mail, Users, Calendar, Edit, Eye, Save, X, Share2, Wand2 } from 'lucide-react';
+import SocialMediaManager from '../components/social/SocialMediaManager';
 
 interface Message {
   id: string;
@@ -15,6 +16,7 @@ interface Message {
 }
 
 const Communications: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'email' | 'social'>('email');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -152,19 +154,55 @@ const Communications: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bebas uppercase text-gray-900">Communications</h1>
-          <p className="text-gray-600 mt-2">Manage email campaigns and messages</p>
+          <p className="text-gray-600 mt-2">Manage email campaigns and AI-powered social media</p>
         </div>
-        <button 
+        <button
           onClick={() => setShowAddModal(true)}
           className="btn-primary flex items-center space-x-2 mt-4 sm:mt-0"
         >
           <Plus className="h-5 w-5" />
-          <span>New Message</span>
+          <span>{activeTab === 'email' ? 'New Message' : 'New Post'}</span>
         </button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* Tabs */}
+      <div className="border-b border-gray-200">
+        <nav className="-mb-px flex space-x-8">
+          <button
+            onClick={() => setActiveTab('email')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'email'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <Mail className="h-5 w-5" />
+              <span>Email Communications</span>
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab('social')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'social'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <Share2 className="h-5 w-5" />
+              <span>Social Media</span>
+              <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">AI Powered</span>
+            </div>
+          </button>
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === 'email' ? (
+        <>
+          {/* Email Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="stat-card">
           <div className="flex items-center justify-between">
             <div>
@@ -597,6 +635,11 @@ const Communications: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+        </>
+      ) : (
+        /* Social Media Tab */
+        <SocialMediaManager />
       )}
     </div>
   );
